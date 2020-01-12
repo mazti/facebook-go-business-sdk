@@ -1,5 +1,9 @@
 package sdk
 
+import (
+	"github.com/mazti/facebook-go-business-sdk/sdk/config"
+)
+
 type APIContext struct {
 	endpointBase      string
 	videoEndpointBase string
@@ -12,15 +16,29 @@ type APIContext struct {
 	log func(...interface{})
 }
 
-func New(endpointBase, videoEndpointBase, accessToken,
-	appSecret, appID, version string) *APIContext {
-	return &APIContext{
-		endpointBase:      endpointBase,
-		videoEndpointBase: videoEndpointBase,
-		accessToken:       accessToken,
-		appSecret:         appSecret,
-		appID:             appID,
-		version:           version,
-		isDebug:           false,
+// accessToken, appSecret, appID, version string
+
+func AccessToken(token string) func(*APIContext) {
+	return func(ctx *APIContext) {
+		ctx.accessToken = token
 	}
+}
+
+func AppSecret(secret string) func(*APIContext) {
+	return func(ctx *APIContext) {
+		ctx.appSecret = secret
+	}
+}
+
+func New(options ...func(*APIContext)) *APIContext {
+	ctx := &APIContext{
+		endpointBase:      config.DefaultAPIBase,
+		videoEndpointBase: config.DefaultVideoBase,
+		version:           config.DefaultAPIVersion,
+	}
+
+	for _, option := range options {
+		option(ctx)
+	}
+	return ctx
 }
