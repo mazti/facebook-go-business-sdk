@@ -7,6 +7,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var (
+	accessToken = "access_token"
+	appSecret   = "app_secret"
+	appID       = "app_id"
+)
+
 func TestNewContext1(t *testing.T) {
 	ctx := New()
 
@@ -18,11 +24,33 @@ func TestNewContext1(t *testing.T) {
 
 func TestNewContext2(t *testing.T) {
 	ctx := New(
-		AccessToken("this_is_secret_token"),
-		AppSecret("this_is_app_secret"),
+		AccessToken(accessToken),
+		AppSecret(appSecret),
 	)
 
 	assert.NotNil(t, ctx)
-	assert.Equal(t, "this_is_secret_token", ctx.accessToken)
-	assert.Equal(t, "3.0", ctx.version)
+	assert.Equal(t, accessToken, ctx.accessToken)
+	assert.Equal(t, appSecret, ctx.appSecret)
+}
+
+func TestNewContext3(t *testing.T) {
+	ctx := New(
+		AppID(appID),
+	)
+
+	assert.NotNil(t, ctx)
+	assert.Empty(t, ctx.accessToken)
+	assert.Empty(t, ctx.appSecret)
+	assert.Equal(t, appID, ctx.appID)
+}
+
+func TestSHA256_OK(t *testing.T) {
+	expected := "d52ddf968d622d8af8677906b7fbae09ac1f89f7cd5c1584b27544624cc23e5a"
+	result := SHA256(appSecret, accessToken)
+	assert.Equal(t, expected, result)
+}
+
+func TestSHA256_EmptyAccessToken(t *testing.T) {
+	result := SHA256(appSecret, "")
+	assert.NotNil(t, result)
 }

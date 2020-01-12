@@ -1,6 +1,10 @@
 package sdk
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
+
 	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 )
 
@@ -16,8 +20,6 @@ type APIContext struct {
 	log func(...interface{})
 }
 
-// accessToken, appSecret, appID, version string
-
 func AccessToken(token string) func(*APIContext) {
 	return func(ctx *APIContext) {
 		ctx.accessToken = token
@@ -27,6 +29,12 @@ func AccessToken(token string) func(*APIContext) {
 func AppSecret(secret string) func(*APIContext) {
 	return func(ctx *APIContext) {
 		ctx.appSecret = secret
+	}
+}
+
+func AppID(id string) func(*APIContext) {
+	return func(ctx *APIContext) {
+		ctx.appID = id
 	}
 }
 
@@ -41,4 +49,10 @@ func New(options ...func(*APIContext)) *APIContext {
 		option(ctx)
 	}
 	return ctx
+}
+
+func SHA256(secret, message string) string {
+	mac := hmac.New(sha256.New, []byte(secret))
+	mac.Write([]byte(message))
+	return hex.EncodeToString(mac.Sum(nil))
 }
