@@ -16,8 +16,13 @@ type APIContext struct {
 	appID             string
 	version           string
 	isDebug           bool
-	// log used for logging on debug mode.
-	log func(...interface{})
+	logger            func(...interface{})
+}
+
+func (ctx *APIContext) Log(a ...interface{}) {
+	if ctx.isDebug && ctx.logger != nil {
+		ctx.logger(a)
+	}
 }
 
 func AccessToken(token string) func(*APIContext) {
@@ -35,6 +40,18 @@ func AppSecret(secret string) func(*APIContext) {
 func AppID(id string) func(*APIContext) {
 	return func(ctx *APIContext) {
 		ctx.appID = id
+	}
+}
+
+func Logger(logger func(...interface{})) func(*APIContext) {
+	return func(ctx *APIContext) {
+		ctx.logger = logger
+	}
+}
+
+func Debug(isDebug bool) func(*APIContext) {
+	return func(ctx *APIContext) {
+		ctx.isDebug = isDebug
 	}
 }
 
