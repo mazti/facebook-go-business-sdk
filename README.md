@@ -39,7 +39,7 @@ export GO111MODULE=on
 go get -d -v github.com/mazti/facebook-go-business-sdk
 
 # Or man-handling it
-mkdir -p $GOPATH/src/github.com/mazti/facebook-go-business-sdk
+mkdir -p $GOPATH/src/github.com/mazti
 git clone https://github.com/mazti/facebook-go-business-sdk.git $GOPATH/src/github.com/mazti/facebook-go-business-sdk
 ```
 
