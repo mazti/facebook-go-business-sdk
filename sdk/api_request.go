@@ -1,5 +1,12 @@
 package sdk
 
+type IRequestExecutor interface {
+	Execute(method, apiUrl string, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
+	SendGet(apiUrl, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
+	SendPost(apiUrl, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
+	SendDelete(apiUrl, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
+}
+
 type APIRequest struct {
 	userAgent        string
 	context          *APIContext
@@ -12,4 +19,37 @@ type APIRequest struct {
 	returnFields     []string
 	overrideURL      string
 	lastResponse     APIResponse
+}
+
+type ResponseWrapper struct {
+	body   []byte
+	header []byte
+}
+
+func NewResponseWrapper(body []byte, header []byte) *ResponseWrapper {
+	return &ResponseWrapper{
+		body:   body,
+		header: header,
+	}
+}
+
+func (req *APIRequest) Execute() (APIResponse, error) {
+	return req.ExecuteWithParams(nil)
+}
+
+func (req *APIRequest) ExecuteWithParams(extraParams map[string]interface{}) (APIResponse, error) {
+	rw := req.executeInternal(extraParams)
+	req.lastResponse = req.parseResponse(rw.body, rw.header)
+	return req.lastResponse, nil
+}
+
+func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *ResponseWrapper {
+	return &ResponseWrapper{
+		body:   nil,
+		header: nil,
+	}
+}
+
+func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
+	return nil
 }
