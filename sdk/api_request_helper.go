@@ -1,11 +1,11 @@
 package sdk
 
 import (
-	"fmt"
+	"encoding/json"
+	"github.com/google/go-querystring/query"
 	"net/url"
 	"path"
-
-	"github.com/google/go-querystring/query"
+	"reflect"
 )
 
 func createRequestURL(rawURL string, rawParams interface{}) (string, error) {
@@ -26,7 +26,12 @@ func createRequestURL(rawURL string, rawParams interface{}) (string, error) {
 		case []byte:
 			requestURL.RawQuery = string(params)
 		case map[string]interface{}:
-			fmt.Println("cai lon gi day")
+			queryValues := make(url.Values)
+			mapParams := rawParams.(map[string]interface{})
+			for k, v := range mapParams {
+				queryValues.Add(k, convertToString(v))
+			}
+			requestURL.RawQuery = queryValues.Encode()
 		default:
 			queryValues, err := query.Values(params)
 			if err != nil {
@@ -38,4 +43,23 @@ func createRequestURL(rawURL string, rawParams interface{}) (string, error) {
 
 	// Return request url as string
 	return requestURL.String(), nil
+}
+
+func convertToString(obj interface{}) string {
+	if obj == nil {
+		return ""
+	}
+	val := reflect.ValueOf(obj)
+	if val.Kind() == reflect.String {
+		return obj.(string)
+	}
+	if bytes, ok := obj.([]byte); ok {
+		return string(bytes)
+	}
+
+	bytes, err := json.Marshal(obj)
+	if err != nil {
+		return ""
+	}
+	return string(bytes)
 }
