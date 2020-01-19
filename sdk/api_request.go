@@ -1,15 +1,9 @@
 package sdk
 
-type IRequestExecutor interface {
-	Execute(method, apiUrl string, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
-	SendGet(apiUrl, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
-	SendPost(apiUrl, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
-	SendDelete(apiUrl, allParams map[string]interface{}, context APIContext) (ResponseWrapper, error)
-}
-
 type APIRequest struct {
-	userAgent        string
 	context          *APIContext
+	executor         IRequestExecutor
+	userAgent        string
 	useVideoEndpoint bool
 	nodeID           string
 	endpoint         string
@@ -44,6 +38,7 @@ func (req *APIRequest) ExecuteWithParams(extraParams map[string]interface{}) (AP
 }
 
 func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *ResponseWrapper {
+
 	return &ResponseWrapper{
 		body:   nil,
 		header: nil,
