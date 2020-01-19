@@ -1,11 +1,12 @@
 package sdk
 
 import (
-	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+
+	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 )
 
 var (
