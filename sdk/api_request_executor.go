@@ -1,7 +1,9 @@
 package sdk
 
 import (
+	"encoding/json"
 	"errors"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -11,10 +13,10 @@ const (
 )
 
 type IRequestExecutor interface {
-	Execute(method, url string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
-	SendGet(url string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
-	SendPost(url string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
-	SendDelete(url string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
+	Execute(method, apiURL string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
+	SendGet(apiURL string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
+	SendPost(apiURL string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
+	SendDelete(apiURL string, params map[string]interface{}, context *APIContext) (*ResponseWrapper, error)
 }
 
 type DefaultRequestExecutor struct {
@@ -30,32 +32,48 @@ func NewDefaultRequestExecutor() *DefaultRequestExecutor {
 	}
 }
 
-func (e *DefaultRequestExecutor) Execute(
-	method, url string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
+func (e *DefaultRequestExecutor) Execute(method, apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
 	if http.MethodGet == method {
-		return e.SendGet(url, params, context)
+		return e.SendGet(apiURL, params, context)
 	}
 	if http.MethodPost == method {
-		return e.SendPost(url, params, context)
+		return e.SendPost(apiURL, params, context)
 	}
 	if http.MethodDelete == method {
-		return e.SendDelete(url, params, context)
+		return e.SendDelete(apiURL, params, context)
 	}
 	return resp, errors.New("unsupported method")
 }
 
-func (e *DefaultRequestExecutor) SendGet(
-	apURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
-	//url.
+func (e *DefaultRequestExecutor) SendGet(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
+	apiURL, err = createRequestURL(apiURL, params)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := e.httpClient.Get(apiURL)
+	if err != nil {
+		return nil, err
+	}
+	defer func() { _ = httpResp.Body.Close() }()
+	respBody, err := ioutil.ReadAll(httpResp.Body)
+	if err != nil {
+		return nil, err
+	}
+	respHeader, err := json.Marshal(httpResp.Header)
+	if err != nil {
+		return nil, err
+	}
+	resp = &ResponseWrapper{
+		Body:   respBody,
+		Header: respHeader,
+	}
 	return
 }
 
-func (e *DefaultRequestExecutor) SendPost(
-	url string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
+func (e *DefaultRequestExecutor) SendPost(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
 	return
 }
 
-func (e *DefaultRequestExecutor) SendDelete(
-	url string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
+func (e *DefaultRequestExecutor) SendDelete(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
 	return
 }
