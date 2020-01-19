@@ -65,12 +65,12 @@ func TestNewContext4(t *testing.T) {
 
 func TestSHA256_OK(t *testing.T) {
 	expected := "d52ddf968d622d8af8677906b7fbae09ac1f89f7cd5c1584b27544624cc23e5a"
-	result := SHA256(appSecret, accessToken)
+	result := sha256(appSecret, accessToken)
 	assert.Equal(t, expected, result)
 }
 
 func TestSHA256_EmptyAccessToken(t *testing.T) {
-	result := SHA256(appSecret, "")
+	result := sha256(appSecret, "")
 	assert.NotNil(t, result)
 }
 

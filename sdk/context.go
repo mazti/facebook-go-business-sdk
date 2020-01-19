@@ -2,7 +2,7 @@ package sdk
 
 import (
 	"crypto/hmac"
-	"crypto/sha256"
+	csha256 "crypto/sha256"
 	"encoding/hex"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk/config"
@@ -68,8 +68,12 @@ func New(options ...func(*APIContext)) *APIContext {
 	return ctx
 }
 
-func SHA256(secret, message string) string {
-	mac := hmac.New(sha256.New, []byte(secret))
+func sha256(secret, message string) string {
+	mac := hmac.New(csha256.New, []byte(secret))
 	mac.Write([]byte(message))
 	return hex.EncodeToString(mac.Sum(nil))
+}
+
+func (ctx *APIContext) GetAppSecretProof() string {
+	return sha256(ctx.appSecret, ctx.accessToken)
 }
