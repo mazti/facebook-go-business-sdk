@@ -27,14 +27,14 @@ type APIRequest struct {
 }
 
 type ResponseWrapper struct {
-	body   []byte
-	header []byte
+	Body   []byte
+	Header []byte
 }
 
 func NewResponseWrapper(body []byte, header []byte) *ResponseWrapper {
 	return &ResponseWrapper{
-		body:   body,
-		header: header,
+		Body:   body,
+		Header: header,
 	}
 }
 
@@ -44,7 +44,7 @@ func (req *APIRequest) Execute() (APIResponse, error) {
 
 func (req *APIRequest) ExecuteWithParams(extraParams map[string]interface{}) (APIResponse, error) {
 	rw := req.executeInternal(extraParams)
-	req.lastResponse = req.parseResponse(rw.body, rw.header)
+	req.lastResponse = req.parseResponse(rw.Body, rw.Header)
 	return req.lastResponse, nil
 }
 
@@ -56,7 +56,7 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 	if err != nil {
 		return resp
 	}
-	ctx.Log("Response", resp.body)
+	ctx.Log("Response", resp.Body)
 	return resp
 }
 
