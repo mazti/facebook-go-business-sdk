@@ -45,7 +45,8 @@ func (e *DefaultRequestExecutor) Execute(
 }
 
 func (e *DefaultRequestExecutor) SendGet(
-	url string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
+	apURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
+	//url.
 	return
 }
 
