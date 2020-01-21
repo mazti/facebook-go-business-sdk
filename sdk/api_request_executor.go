@@ -3,6 +3,7 @@ package sdk
 import (
 	"encoding/json"
 	"errors"
+	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -10,6 +11,9 @@ import (
 
 const (
 	defaultTimeout = 15
+	userAgent      = "User-Agent"
+	contentType    = "Content-Type"
+	contentTypeURL = "application/x-www-form-urlencoded"
 )
 
 type IRequestExecutor interface {
@@ -50,24 +54,19 @@ func (e *DefaultRequestExecutor) SendGet(apiURL string, params map[string]interf
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := e.httpClient.Get(apiURL)
+	context.Log("Request:")
+	context.Log("GET:", apiURL)
+	httpReq, err := http.NewRequest("GET", apiURL, nil)
 	if err != nil {
 		return nil, err
 	}
-	defer func() { _ = httpResp.Body.Close() }()
-	respBody, err := ioutil.ReadAll(httpResp.Body)
+	httpReq.Header.Add(userAgent, config.UserAgent)
+	httpReq.Header.Add(contentType, contentTypeURL)
+	httpResp, err := e.httpClient.Do(httpReq)
 	if err != nil {
 		return nil, err
 	}
-	respHeader, err := json.Marshal(httpResp.Header)
-	if err != nil {
-		return nil, err
-	}
-	resp = &ResponseWrapper{
-		Body:   respBody,
-		Header: respHeader,
-	}
-	return
+	return readResponse(httpResp)
 }
 
 func (e *DefaultRequestExecutor) SendPost(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
@@ -75,5 +74,36 @@ func (e *DefaultRequestExecutor) SendPost(apiURL string, params map[string]inter
 }
 
 func (e *DefaultRequestExecutor) SendDelete(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
-	return
+	apiURL, err = createRequestURL(apiURL, params)
+	if err != nil {
+		return nil, err
+	}
+	context.Log("Request:")
+	context.Log("DELETE:", apiURL)
+	httpReq, err := http.NewRequest("DELETE", apiURL, nil)
+	if err != nil {
+		return nil, err
+	}
+	httpReq.Header.Add(userAgent, config.UserAgent)
+	httpResp, err := e.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, err
+	}
+	return readResponse(httpResp)
+}
+
+func readResponse(resp *http.Response) (*ResponseWrapper, error) {
+	defer func() { _ = resp.Body.Close() }()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	respHeader, err := json.Marshal(resp.Header)
+	if err != nil {
+		return nil, err
+	}
+	return &ResponseWrapper{
+		Body:   respBody,
+		Header: respHeader,
+	}, nil
 }
