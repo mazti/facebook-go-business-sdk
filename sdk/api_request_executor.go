@@ -1,12 +1,15 @@
 package sdk
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"time"
+
+	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 )
 
 const (
@@ -70,7 +73,32 @@ func (e *DefaultRequestExecutor) SendGet(apiURL string, params map[string]interf
 }
 
 func (e *DefaultRequestExecutor) SendPost(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
-	return
+	apiURL, err = createRequestURL(apiURL, params)
+	if err != nil {
+		return nil, err
+	}
+	context.Log("Request:")
+	context.Log("POST:", apiURL)
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	for key, val := range params {
+		_ = writer.WriteField(key, val.(string))
+	}
+	err = writer.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	httpReq, err := http.NewRequest("POST", apiURL, body)
+	if err != nil {
+		return nil, err
+	}
+	httpReq.Header.Add(userAgent, config.UserAgent)
+	httpResp, err := e.httpClient.Do(httpReq)
+	if err != nil {
+		return nil, err
+	}
+	return readResponse(httpResp)
 }
 
 func (e *DefaultRequestExecutor) SendDelete(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
