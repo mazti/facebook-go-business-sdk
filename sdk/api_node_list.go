@@ -11,7 +11,9 @@ type Paging struct {
 }
 
 type APINodeList struct {
-	Paging         Paging `json:"paging"`
+	Paging Paging        `json:"paging"`
+	Data   []interface{} `json:"data,omitempty"`
+
 	request        *APIRequest
 	body           []byte
 	header         []byte
