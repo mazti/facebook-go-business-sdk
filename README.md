@@ -53,3 +53,6 @@ go mod vendor
 ```
 
 ### 5. Run the tests
+```bash
+go test ./...
+```

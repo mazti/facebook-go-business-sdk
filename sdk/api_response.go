@@ -3,7 +3,7 @@ package sdk
 import "encoding/json"
 
 type APIResponse interface {
-	GetRawResponse() string
+	GetRawResponse() []byte
 	GetRawResponseAsJsonObject() json.RawMessage
-	GetHeader() string
+	GetHeader() []byte
 }

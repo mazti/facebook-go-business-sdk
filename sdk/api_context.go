@@ -21,7 +21,7 @@ type APIContext struct {
 
 func (ctx *APIContext) Log(a ...interface{}) {
 	if ctx.isDebug && ctx.logger != nil {
-		ctx.logger(a)
+		ctx.logger(a...)
 	}
 }
 
@@ -55,7 +55,7 @@ func Debug(isDebug bool) func(*APIContext) {
 	}
 }
 
-func New(options ...func(*APIContext)) *APIContext {
+func NewContext(options ...func(*APIContext)) *APIContext {
 	ctx := &APIContext{
 		endpointBase:      config.DefaultAPIBase,
 		videoEndpointBase: config.DefaultVideoBase,
