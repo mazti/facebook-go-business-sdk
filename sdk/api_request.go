@@ -59,7 +59,7 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 	if err != nil {
 		return resp
 	}
-	ctx.Log("Response", resp.Body)
+	ctx.Log("Response:", string(resp.Body))
 	return resp
 }
 

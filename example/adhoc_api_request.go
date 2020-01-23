@@ -17,10 +17,9 @@ func main() {
 		sdk.Debug(true),
 	)
 	req := sdk.NewAPIRequest(context, "me", "adaccounts", "GET")
-	resp, err := req.Execute()
+	_, err := req.Execute()
 	if err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println(string(resp.GetRawResponse()))
 }
