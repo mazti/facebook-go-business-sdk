@@ -26,16 +26,19 @@ type APIRequest struct {
 	lastResponse     APIResponse
 }
 
+func NewAPIRequest(context *APIContext, nodeID, endpoint, method string) *APIRequest {
+	return &APIRequest{
+		context:  context,
+		nodeID:   nodeID,
+		endpoint: endpoint,
+		method:   method,
+		executor: NewDefaultRequestExecutor(),
+	}
+}
+
 type ResponseWrapper struct {
 	Body   []byte
 	Header []byte
-}
-
-func NewResponseWrapper(body []byte, header []byte) *ResponseWrapper {
-	return &ResponseWrapper{
-		Body:   body,
-		Header: header,
-	}
 }
 
 func (req *APIRequest) Execute() (APIResponse, error) {
@@ -61,7 +64,11 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 }
 
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
-	return nil
+	return LoadJSON(
+		req.context,
+		body,
+		header,
+	)
 }
 
 func (req *APIRequest) getURL() string {

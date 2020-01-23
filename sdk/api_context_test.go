@@ -16,7 +16,7 @@ var (
 )
 
 func TestNewContext1(t *testing.T) {
-	ctx := New()
+	ctx := NewContext()
 
 	assert.NotNil(t, ctx)
 	assert.Equal(t, ctx.endpointBase, config.DefaultAPIBase)
@@ -25,7 +25,7 @@ func TestNewContext1(t *testing.T) {
 }
 
 func TestNewContext2(t *testing.T) {
-	ctx := New(
+	ctx := NewContext(
 		AccessToken(accessToken),
 		AppSecret(appSecret),
 	)
@@ -36,7 +36,7 @@ func TestNewContext2(t *testing.T) {
 }
 
 func TestNewContext3(t *testing.T) {
-	ctx := New(
+	ctx := NewContext(
 		AppID(appID),
 	)
 
@@ -50,7 +50,7 @@ func TestNewContext4(t *testing.T) {
 	mocker := loggerMock{}
 	mocker.On("Log", mock.Anything).Once()
 
-	ctx := New(
+	ctx := NewContext(
 		Logger(mocker.Log),
 		Debug(true),
 	)
