@@ -1,6 +1,7 @@
 package sdk
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -10,6 +11,9 @@ const (
 	appSecretProof = "appsecret_proof"
 	fields         = "fields"
 )
+
+// Unmarshal ...
+type Unmarshal func(json json.RawMessage) (APIResponse, error)
 
 type APIRequest struct {
 	context          *APIContext
@@ -24,6 +28,7 @@ type APIRequest struct {
 	returnFields     []string
 	overrideURL      string
 	lastResponse     APIResponse
+	unmarshal        Unmarshal
 }
 
 func NewAPIRequest(context *APIContext, nodeID, endpoint, method string) *APIRequest {
@@ -64,6 +69,12 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 }
 
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
+	if req.unmarshal != nil {
+		resp, err := req.unmarshal(body)
+		if err == nil {
+			return resp
+		}
+	}
 	return LoadJSON(
 		req.context,
 		body,
