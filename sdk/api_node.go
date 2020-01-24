@@ -21,7 +21,7 @@ func (n APINode) GetRawResponse() []byte {
 }
 
 func (n APINode) GetRawResponseAsJsonObject() json.RawMessage {
-	return json.RawMessage{}
+	return n.rawValue
 }
 
 func (n APINode) GetHeader() []byte {

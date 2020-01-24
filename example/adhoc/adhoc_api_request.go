@@ -25,11 +25,17 @@ func main() {
 		fmt.Println(err.Error())
 		return
 	}
+
+	// Testing capability of read paging
 	nodeList := sdk.APINodeList{}
 	if err = json.Unmarshal(resp.GetRawResponse(), &nodeList); err != nil {
 		fmt.Println(err.Error())
 		return
 	}
-	fmt.Println(string(resp.GetRawResponse()))
-	fmt.Println(nodeList)
+	//fmt.Println(string(resp.GetRawResponse()))
+	//fmt.Println("-----")
+	//fmt.Println(nodeList)
+	fmt.Println("-----")
+	fmt.Println(string(nodeList.Data))
+
 }
