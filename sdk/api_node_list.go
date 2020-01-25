@@ -1,6 +1,8 @@
 package sdk
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type Cursors struct {
 	Before string `json:"before,omitempty"`
@@ -20,6 +22,14 @@ type APINodeList struct {
 	header         []byte
 	autoPagination bool
 	appSecret      string
+}
+
+func ParseAPINodeList(data json.RawMessage) (APIResponse, error) {
+	nodeList := APINodeList{}
+	if err := json.Unmarshal(data, &nodeList); err != nil {
+		return nodeList, err
+	}
+	return nodeList, nil
 }
 
 func (n APINodeList) GetRawResponse() []byte {

@@ -12,38 +12,58 @@ const (
 	fields         = "fields"
 )
 
+// ResponseWrapper ...
+type ResponseWrapper struct {
+	Body   []byte
+	Header []byte
+}
+
 // Unmarshal ...
 type Unmarshal func(json json.RawMessage) (APIResponse, error)
 
+// APIRequest ...
 type APIRequest struct {
-	context          *APIContext
-	executor         IRequestExecutor
-	userAgent        string
+	context *APIContext
+
+	executor  IRequestExecutor
+	unmarshal Unmarshal
+
+	nodeID   string
+	endpoint string
+	method   string
+
+	paramNames   []string
+	params       map[string]interface{}
+	returnFields []string
+	overrideURL  string
+
 	useVideoEndpoint bool
-	nodeID           string
-	endpoint         string
-	method           string
-	paramNames       []string
-	params           map[string]interface{}
-	returnFields     []string
-	overrideURL      string
-	lastResponse     APIResponse
-	unmarshal        Unmarshal
+	userAgent        string
+
+	lastResponse APIResponse
 }
 
-func NewAPIRequest(context *APIContext, nodeID, endpoint, method string) *APIRequest {
-	return &APIRequest{
+func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options ...func(*APIRequest)) *APIRequest {
+	req := &APIRequest{
 		context:  context,
 		nodeID:   nodeID,
 		endpoint: endpoint,
 		method:   method,
 		executor: NewDefaultRequestExecutor(),
 	}
+
+	for _, option := range options {
+		option(req)
+	}
+
+	return req
 }
 
-type ResponseWrapper struct {
-	Body   []byte
-	Header []byte
+// Options for constructors
+func Parser(unmarshal func(json json.RawMessage) (APIResponse, error)) func(*APIRequest) {
+	return func(req *APIRequest) {
+		req.unmarshal = unmarshal
+	}
 }
 
 func (req *APIRequest) Execute() (APIResponse, error) {
