@@ -1,6 +1,7 @@
 package sdk
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -11,34 +12,58 @@ const (
 	fields         = "fields"
 )
 
-type APIRequest struct {
-	context          *APIContext
-	executor         IRequestExecutor
-	userAgent        string
-	useVideoEndpoint bool
-	nodeID           string
-	endpoint         string
-	method           string
-	paramNames       []string
-	params           map[string]interface{}
-	returnFields     []string
-	overrideURL      string
-	lastResponse     APIResponse
+// ResponseWrapper ...
+type ResponseWrapper struct {
+	Body   []byte
+	Header []byte
 }
 
-func NewAPIRequest(context *APIContext, nodeID, endpoint, method string) *APIRequest {
-	return &APIRequest{
+// Unmarshal ...
+type Unmarshal func(json json.RawMessage) (APIResponse, error)
+
+// APIRequest ...
+type APIRequest struct {
+	context *APIContext
+
+	executor  IRequestExecutor
+	unmarshal Unmarshal
+
+	nodeID   string
+	endpoint string
+	method   string
+
+	paramNames   []string
+	params       map[string]interface{}
+	returnFields []string
+	overrideURL  string
+
+	useVideoEndpoint bool
+	userAgent        string
+
+	lastResponse APIResponse
+}
+
+func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options ...func(*APIRequest)) *APIRequest {
+	req := &APIRequest{
 		context:  context,
 		nodeID:   nodeID,
 		endpoint: endpoint,
 		method:   method,
 		executor: NewDefaultRequestExecutor(),
 	}
+
+	for _, option := range options {
+		option(req)
+	}
+
+	return req
 }
 
-type ResponseWrapper struct {
-	Body   []byte
-	Header []byte
+// Options for constructors
+func Parser(unmarshal func(json json.RawMessage) (APIResponse, error)) func(*APIRequest) {
+	return func(req *APIRequest) {
+		req.unmarshal = unmarshal
+	}
 }
 
 func (req *APIRequest) Execute() (APIResponse, error) {
@@ -64,6 +89,12 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 }
 
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
+	if req.unmarshal != nil {
+		resp, err := req.unmarshal(body)
+		if err == nil {
+			return resp
+		}
+	}
 	return LoadJSON(
 		req.context,
 		body,
