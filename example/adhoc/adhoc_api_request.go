@@ -18,16 +18,18 @@ func main() {
 		sdk.Logger(Log),
 		sdk.Debug(true),
 	)
+	response := sdk.APINodeList{
+		Data: []sdk.AdAccount{},
+	}
 
 	req := sdk.NewAPIRequest(
 		context,
 		"me",
 		"adaccounts",
 		"GET",
-		sdk.Response(sdk.APINodeList{
-			Data: []sdk.AdAccount{},
-		}),
+		sdk.ResponseTemplate(response),
 	)
+
 	resp, err := req.Execute()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -36,5 +38,5 @@ func main() {
 
 	nodeList := resp.(sdk.APINodeList)
 
-	fmt.Println(nodeList.Data)
+	fmt.Println(nodeList.Data.([]sdk.AdAccount))
 }

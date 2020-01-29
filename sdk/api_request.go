@@ -51,9 +51,9 @@ func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options
 }
 
 // Options for constructors
-func Response(response APIResponse) func(*APIRequest) {
+func ResponseTemplate(resp APIResponse) func(*APIRequest) {
 	return func(req *APIRequest) {
-		req.response = response
+		req.response = resp
 	}
 }
 
@@ -80,8 +80,9 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 }
 
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
-	if req.response == nil {
-		if err := req.response.Parse(body); err == nil {
+	var err error
+	if req.response != nil {
+		if req.response, err = req.response.Parse(body); err == nil {
 			return req.response
 		}
 	}

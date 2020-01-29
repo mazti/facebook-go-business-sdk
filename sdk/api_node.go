@@ -28,6 +28,6 @@ func (n APINode) GetHeader() []byte {
 	return n.header
 }
 
-func (n APINode) Parse(data json.RawMessage) error {
-	return nil
+func (n APINode) Parse(data json.RawMessage) (APIResponse, error) {
+	return nil, nil
 }

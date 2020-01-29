@@ -25,14 +25,14 @@ type APINodeList struct {
 	appSecret      string
 }
 
-func (n APINodeList) Parse(data json.RawMessage) error {
+func (n APINodeList) Parse(data json.RawMessage) (APIResponse, error) {
 	if err := json.Unmarshal(data, &n); err != nil {
-		return err
+		return nil, err
 	}
-	if err := json.Unmarshal(n.RawData, n.Data); err != nil {
-		return err
+	if err := json.Unmarshal(n.RawData, &n.Data); err != nil {
+		return nil, err
 	}
-	return nil
+	return n, nil
 }
 
 func (n APINodeList) GetRawResponse() []byte {
