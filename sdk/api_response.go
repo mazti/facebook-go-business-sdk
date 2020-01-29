@@ -6,4 +6,5 @@ type APIResponse interface {
 	GetRawResponse() []byte
 	GetRawResponseAsJsonObject() json.RawMessage
 	GetHeader() []byte
+	Parse(data json.RawMessage) error
 }

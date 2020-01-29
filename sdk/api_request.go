@@ -1,7 +1,6 @@
 package sdk
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -18,29 +17,21 @@ type ResponseWrapper struct {
 	Header []byte
 }
 
-// Unmarshal ...
-type Unmarshal func(json json.RawMessage) (APIResponse, error)
-
 // APIRequest ...
 type APIRequest struct {
-	context *APIContext
-
-	executor  IRequestExecutor
-	unmarshal Unmarshal
-
-	nodeID   string
-	endpoint string
-	method   string
-
-	paramNames   []string
-	params       map[string]interface{}
-	returnFields []string
-	overrideURL  string
-
+	context          *APIContext
+	executor         IRequestExecutor
+	response         APIResponse
+	nodeID           string
+	endpoint         string
+	method           string
+	paramNames       []string
+	params           map[string]interface{}
+	returnFields     []string
+	overrideURL      string
 	useVideoEndpoint bool
 	userAgent        string
-
-	lastResponse APIResponse
+	lastResponse     APIResponse
 }
 
 func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options ...func(*APIRequest)) *APIRequest {
@@ -60,9 +51,9 @@ func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options
 }
 
 // Options for constructors
-func Parser(unmarshal func(json json.RawMessage) (APIResponse, error)) func(*APIRequest) {
+func Response(response APIResponse) func(*APIRequest) {
 	return func(req *APIRequest) {
-		req.unmarshal = unmarshal
+		req.response = response
 	}
 }
 
@@ -89,10 +80,9 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 }
 
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
-	if req.unmarshal != nil {
-		resp, err := req.unmarshal(body)
-		if err == nil {
-			return resp
+	if req.response == nil {
+		if err := req.response.Parse(body); err == nil {
+			return req.response
 		}
 	}
 	return LoadJSON(

@@ -27,3 +27,7 @@ func (n APINode) GetRawResponseAsJsonObject() json.RawMessage {
 func (n APINode) GetHeader() []byte {
 	return n.header
 }
+
+func (n APINode) Parse(data json.RawMessage) error {
+	return nil
+}
