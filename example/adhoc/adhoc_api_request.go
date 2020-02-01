@@ -6,6 +6,7 @@ import (
 
 	. "github.com/mazti/facebook-go-business-sdk/example"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
+	"github.com/mazti/facebook-go-business-sdk/sdk/adaccount"
 )
 
 func Log(a ...interface{}) {
@@ -38,7 +39,7 @@ func main() {
 	fmt.Println(string(nodeList.Data))
 
 	fmt.Println("-----")
-	adaccounts := []sdk.AdAccount{}
+	var adaccounts []adaccount.AdAccount
 
 	err = json.Unmarshal(nodeList.Data, &adaccounts)
 	if err != nil {

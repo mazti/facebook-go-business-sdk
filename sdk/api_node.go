@@ -3,27 +3,33 @@ package sdk
 import "encoding/json"
 
 type APINode struct {
-	context  *APIContext
-	rawValue []byte
-	header   []byte
+	Context  *APIContext
+	RawValue []byte
+	Header   []byte
 }
 
-func LoadJSON(ctx *APIContext, body []byte, header []byte) APINode {
-	return APINode{
-		context:  ctx,
-		rawValue: body,
-		header:   header,
+func CreateAPINode(context *APIContext) *APINode {
+	return &APINode{
+		Context: context,
+	}
+}
+
+func LoadJSON(ctx *APIContext, body []byte, header []byte) *APINode {
+	return &APINode{
+		Context:  ctx,
+		RawValue: body,
+		Header:   header,
 	}
 }
 
 func (n APINode) GetRawResponse() []byte {
-	return n.rawValue
+	return n.RawValue
 }
 
 func (n APINode) GetRawResponseAsJsonObject() json.RawMessage {
-	return n.rawValue
+	return n.RawValue
 }
 
 func (n APINode) GetHeader() []byte {
-	return n.header
+	return n.Header
 }

@@ -8,8 +8,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"time"
-
-	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 )
 
 const (
@@ -63,7 +61,7 @@ func (e *DefaultRequestExecutor) SendGet(apiURL string, params map[string]interf
 	if err != nil {
 		return nil, err
 	}
-	httpReq.Header.Add(userAgent, config.UserAgent)
+	httpReq.Header.Add(userAgent, context.userAgent)
 	httpReq.Header.Add(contentType, contentTypeURL)
 	httpResp, err := e.httpClient.Do(httpReq)
 	if err != nil {
@@ -93,7 +91,7 @@ func (e *DefaultRequestExecutor) SendPost(apiURL string, params map[string]inter
 	if err != nil {
 		return nil, err
 	}
-	httpReq.Header.Add(userAgent, config.UserAgent)
+	httpReq.Header.Add(userAgent, context.userAgent)
 	httpResp, err := e.httpClient.Do(httpReq)
 	if err != nil {
 		return nil, err
@@ -112,7 +110,7 @@ func (e *DefaultRequestExecutor) SendDelete(apiURL string, params map[string]int
 	if err != nil {
 		return nil, err
 	}
-	httpReq.Header.Add(userAgent, config.UserAgent)
+	httpReq.Header.Add(userAgent, context.userAgent)
 	httpResp, err := e.httpClient.Do(httpReq)
 	if err != nil {
 		return nil, err

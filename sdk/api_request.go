@@ -45,11 +45,12 @@ type APIRequest struct {
 
 func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options ...func(*APIRequest)) *APIRequest {
 	req := &APIRequest{
-		context:  context,
-		nodeID:   nodeID,
-		endpoint: endpoint,
-		method:   method,
-		executor: NewDefaultRequestExecutor(),
+		context:   context,
+		nodeID:    nodeID,
+		endpoint:  endpoint,
+		method:    method,
+		executor:  NewDefaultRequestExecutor(),
+		unmarshal: ParseAPINodeList,
 	}
 
 	for _, option := range options {
