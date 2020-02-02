@@ -14,7 +14,9 @@ func main() {
 		sdk.Debug(true),
 	)
 
-	account, err := adaccount.FetchByID("2745055142177332", context)
+	account := adaccount.NewAdAccount("2745055142177332", context)
+
+	account, err := account.Fetch()
 
 	context.Log(err)
 	context.Log(account.AccountID, account.AccountStatus)

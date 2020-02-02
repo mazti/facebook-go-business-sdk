@@ -15,27 +15,34 @@ type Paging struct {
 }
 
 type APINodeList struct {
+	node           *APINode
 	Paging         Paging          `json:"paging"`
 	Data           json.RawMessage `json:"data,omitempty"`
 	request        *APIRequest
-	body           []byte
-	header         []byte
 	autoPagination bool
 	appSecret      string
 }
 
 func ParserResponse(data json.RawMessage) (APIResponse, error) {
-	nodeList := APINodeList{}
-	if err := json.Unmarshal(data, &nodeList); err != nil {
-		return nodeList, err
+	nodeList := &APINodeList{}
+	if err := json.Unmarshal(data, nodeList); err != nil {
+		return nil, err
 	}
 	return nodeList, nil
 }
 
-func (n APINodeList) GetBody() []byte {
-	return n.body
+func (ent APINodeList) GetBody() []byte {
+	return ent.node.GetBody()
 }
 
-func (n APINodeList) GetHeader() []byte {
-	return n.header
+func (ent APINodeList) GetHeader() []byte {
+	return ent.node.GetHeader()
+}
+
+func (ent *APINodeList) SetBody(body []byte) {
+	ent.node.SetBody(body)
+}
+
+func (ent *APINodeList) SetHeader(header []byte) {
+	ent.node.SetHeader(header)
 }

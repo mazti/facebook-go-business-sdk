@@ -1,6 +1,7 @@
 package adaccount
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"net/http"
@@ -14,11 +15,26 @@ type AdAccount struct {
 }
 
 func NewAdAccount(id string, context *sdk.APIContext) *AdAccount {
-	adAccount := &AdAccount{
+	return &AdAccount{
 		node: sdk.CreateAPINode(context),
 		ID:   id,
 	}
-	return adAccount
+}
+
+func (ent AdAccount) GetBody() []byte {
+	return ent.node.GetBody()
+}
+
+func (ent AdAccount) GetHeader() []byte {
+	return ent.node.GetBody()
+}
+
+func (ent *AdAccount) SetBody(body []byte) {
+	ent.node.SetBody(body)
+}
+
+func (ent *AdAccount) SetHeader(header []byte) {
+	ent.node.SetHeader(header)
 }
 
 func (ent *AdAccount) getPrefixID() string {
@@ -34,17 +50,28 @@ func (ent *AdAccount) Fetch() (*AdAccount, error) {
 	return obj, nil
 }
 
+func ParserResponse(data json.RawMessage) (sdk.APIResponse, error) {
+	ent := &AdAccount{}
+	if err := json.Unmarshal(data, ent); err != nil {
+		return ent, err
+	}
+	return ent, nil
+}
+
 func FetchByID(id string, context *sdk.APIContext) (*AdAccount, error) {
 	req := sdk.NewAPIRequest(
 		context,
 		id,
 		sdk.DefaultEndpoint,
 		http.MethodGet,
-		sdk.Parser(sdk.ParserResponse),
+		sdk.Parser(ParserResponse),
 	)
-	_, err := req.Execute()
+	ent, err := req.Execute()
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+
+	account := ent.(*AdAccount)
+
+	return account, nil
 }

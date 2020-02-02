@@ -20,10 +20,18 @@ func LoadJSON(ctx *APIContext, body []byte, header []byte) *APINode {
 	}
 }
 
-func (n APINode) GetBody() []byte {
-	return n.Body
+func (ent APINode) GetBody() []byte {
+	return ent.Body
 }
 
-func (n APINode) GetHeader() []byte {
-	return n.Header
+func (ent APINode) GetHeader() []byte {
+	return ent.Header
+}
+
+func (ent *APINode) SetBody(body []byte) {
+	ent.Body = body
+}
+
+func (ent *APINode) SetHeader(header []byte) {
+	ent.Header = header
 }
