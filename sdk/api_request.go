@@ -92,7 +92,9 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
 	if req.unmarshal != nil {
 		resp, err := req.unmarshal(body)
-		if err == nil {
+		if err == nil && resp != nil {
+			resp.SetBody(body)
+			resp.SetHeader(header)
 			return resp
 		}
 	}

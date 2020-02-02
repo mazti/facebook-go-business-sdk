@@ -21,35 +21,6 @@ func NewAdAccount(id string, context *sdk.APIContext) *AdAccount {
 	}
 }
 
-func (ent AdAccount) GetBody() []byte {
-	return ent.node.GetBody()
-}
-
-func (ent AdAccount) GetHeader() []byte {
-	return ent.node.GetBody()
-}
-
-func (ent *AdAccount) SetBody(body []byte) {
-	ent.node.SetBody(body)
-}
-
-func (ent *AdAccount) SetHeader(header []byte) {
-	ent.node.SetHeader(header)
-}
-
-func (ent *AdAccount) getPrefixID() string {
-	return fmt.Sprintf(prefix, ent.ID)
-}
-
-func (ent *AdAccount) Fetch() (*AdAccount, error) {
-	obj, err := FetchByID(ent.getPrefixID(), ent.node.Context)
-	if err != nil {
-		return nil, err
-	}
-	// TODO: check copy value
-	return obj, nil
-}
-
 func ParserResponse(data json.RawMessage) (sdk.APIResponse, error) {
 	ent := &AdAccount{}
 	if err := json.Unmarshal(data, ent); err != nil {
@@ -74,4 +45,17 @@ func FetchByID(id string, context *sdk.APIContext) (*AdAccount, error) {
 	account := ent.(*AdAccount)
 
 	return account, nil
+}
+
+func (ent *AdAccount) Fetch() (*AdAccount, error) {
+	obj, err := FetchByID(ent.getPrefixID(), ent.node.Context)
+	if err != nil {
+		return nil, err
+	}
+	// TODO: check copy value
+	return obj, nil
+}
+
+func (ent *AdAccount) getPrefixID() string {
+	return fmt.Sprintf(prefix, ent.ID)
 }

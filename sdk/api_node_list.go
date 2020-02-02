@@ -23,8 +23,14 @@ type APINodeList struct {
 	appSecret      string
 }
 
+func createAPINodeList() *APINodeList {
+	return &APINodeList{
+		node: &APINode{},
+	}
+}
+
 func ParserResponse(data json.RawMessage) (APIResponse, error) {
-	nodeList := &APINodeList{}
+	nodeList := createAPINodeList()
 	if err := json.Unmarshal(data, nodeList); err != nil {
 		return nil, err
 	}

@@ -27,7 +27,7 @@ func main() {
 		return
 	}
 
-	nodeList := resp.(sdk.APINodeList)
+	nodeList := resp.(*sdk.APINodeList)
 
 	context.Log("-----")
 	var adaccounts []adaccount.AdAccount

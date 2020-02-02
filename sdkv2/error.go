@@ -1,6 +1,8 @@
-package error
+package sdkv2
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type FacebookRequestError struct {
 	message string
