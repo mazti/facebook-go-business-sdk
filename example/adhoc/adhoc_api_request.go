@@ -2,15 +2,11 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 
 	. "github.com/mazti/facebook-go-business-sdk/example"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
+	"github.com/mazti/facebook-go-business-sdk/sdk/adaccount"
 )
-
-func Log(a ...interface{}) {
-	fmt.Println(a...)
-}
 
 func main() {
 	context := sdk.NewContext(
@@ -24,27 +20,22 @@ func main() {
 		"me",
 		"adaccounts",
 		"GET",
-		sdk.Parser(sdk.ParseAPINodeList),
 	)
 	resp, err := req.Execute()
 	if err != nil {
-		fmt.Println(err.Error())
+		context.Log(err)
 		return
 	}
 
-	nodeList := resp.(sdk.APINodeList)
+	nodeList := resp.(*sdk.APINodeList)
 
-	fmt.Println("-----")
-	fmt.Println(string(nodeList.Data))
-
-	fmt.Println("-----")
-	adaccounts := []sdk.AdAccount{}
+	context.Log("-----")
+	var adaccounts []adaccount.AdAccount
 
 	err = json.Unmarshal(nodeList.Data, &adaccounts)
 	if err != nil {
-		fmt.Println(err.Error())
+		context.Log(err)
 		return
 	}
-
-	fmt.Println(adaccounts)
+	context.Log(adaccounts)
 }

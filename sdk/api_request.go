@@ -45,11 +45,12 @@ type APIRequest struct {
 
 func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options ...func(*APIRequest)) *APIRequest {
 	req := &APIRequest{
-		context:  context,
-		nodeID:   nodeID,
-		endpoint: endpoint,
-		method:   method,
-		executor: NewDefaultRequestExecutor(),
+		context:   context,
+		nodeID:    nodeID,
+		endpoint:  endpoint,
+		method:    method,
+		executor:  NewDefaultRequestExecutor(),
+		unmarshal: ParserResponse,
 	}
 
 	for _, option := range options {
@@ -91,7 +92,9 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *Resp
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
 	if req.unmarshal != nil {
 		resp, err := req.unmarshal(body)
-		if err == nil {
+		if err == nil && resp != nil {
+			resp.SetBody(body)
+			resp.SetHeader(header)
 			return resp
 		}
 	}

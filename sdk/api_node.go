@@ -1,29 +1,37 @@
 package sdk
 
-import "encoding/json"
-
 type APINode struct {
-	context  *APIContext
-	rawValue []byte
-	header   []byte
+	Context *APIContext
+	Body    []byte
+	Header  []byte
 }
 
-func LoadJSON(ctx *APIContext, body []byte, header []byte) APINode {
-	return APINode{
-		context:  ctx,
-		rawValue: body,
-		header:   header,
+func CreateAPINode(context *APIContext) *APINode {
+	return &APINode{
+		Context: context,
 	}
 }
 
-func (n APINode) GetRawResponse() []byte {
-	return n.rawValue
+func LoadJSON(ctx *APIContext, body []byte, header []byte) *APINode {
+	return &APINode{
+		Context: ctx,
+		Body:    body,
+		Header:  header,
+	}
 }
 
-func (n APINode) GetRawResponseAsJsonObject() json.RawMessage {
-	return n.rawValue
+func (ent APINode) GetBody() []byte {
+	return ent.Body
 }
 
-func (n APINode) GetHeader() []byte {
-	return n.header
+func (ent APINode) GetHeader() []byte {
+	return ent.Header
+}
+
+func (ent *APINode) SetBody(body []byte) {
+	ent.Body = body
+}
+
+func (ent *APINode) SetHeader(header []byte) {
+	ent.Header = header
 }

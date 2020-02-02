@@ -1,9 +1,8 @@
 package sdk
 
-import "encoding/json"
-
 type APIResponse interface {
-	GetRawResponse() []byte
-	GetRawResponseAsJsonObject() json.RawMessage
+	GetBody() []byte
 	GetHeader() []byte
+	SetBody(body []byte)
+	SetHeader(header []byte)
 }

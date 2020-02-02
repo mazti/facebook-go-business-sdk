@@ -4,8 +4,6 @@ import (
 	"crypto/hmac"
 	csha256 "crypto/sha256"
 	"encoding/hex"
-
-	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 )
 
 type APIContext struct {
@@ -15,6 +13,7 @@ type APIContext struct {
 	appSecret         string
 	appID             string
 	version           string
+	userAgent         string
 	isDebug           bool
 	logger            func(...interface{})
 }
@@ -23,6 +22,30 @@ func (ctx *APIContext) Log(a ...interface{}) {
 	if ctx.isDebug && ctx.logger != nil {
 		ctx.logger(a...)
 	}
+}
+
+func (ctx *APIContext) EnableDebug(debug bool) *APIContext {
+	ctx.isDebug = debug
+	return ctx
+}
+
+func (ctx *APIContext) GetAppSecretProof() string {
+	return sha256(ctx.appSecret, ctx.accessToken)
+}
+
+// NewContext create a context with options for constructor
+func NewContext(options ...func(*APIContext)) *APIContext {
+	ctx := &APIContext{
+		endpointBase:      DefaultAPIBase,
+		videoEndpointBase: DefaultVideoBase,
+		version:           DefaultAPIVersion,
+		userAgent:         DefaultUserAgent,
+	}
+
+	for _, option := range options {
+		option(ctx)
+	}
+	return ctx
 }
 
 func AccessToken(token string) func(*APIContext) {
@@ -55,25 +78,8 @@ func Debug(isDebug bool) func(*APIContext) {
 	}
 }
 
-func NewContext(options ...func(*APIContext)) *APIContext {
-	ctx := &APIContext{
-		endpointBase:      config.DefaultAPIBase,
-		videoEndpointBase: config.DefaultVideoBase,
-		version:           config.DefaultAPIVersion,
-	}
-
-	for _, option := range options {
-		option(ctx)
-	}
-	return ctx
-}
-
 func sha256(secret, message string) string {
 	mac := hmac.New(csha256.New, []byte(secret))
 	mac.Write([]byte(message))
 	return hex.EncodeToString(mac.Sum(nil))
-}
-
-func (ctx *APIContext) GetAppSecretProof() string {
-	return sha256(ctx.appSecret, ctx.accessToken)
 }

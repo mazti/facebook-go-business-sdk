@@ -5,8 +5,6 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-
-	"github.com/mazti/facebook-go-business-sdk/sdk/config"
 )
 
 var (
@@ -15,16 +13,16 @@ var (
 	appID       = "app_id"
 )
 
-func TestNewContext1(t *testing.T) {
+func TestNewContextSimple(t *testing.T) {
 	ctx := NewContext()
 
 	assert.NotNil(t, ctx)
-	assert.Equal(t, ctx.endpointBase, config.DefaultAPIBase)
-	assert.Equal(t, ctx.version, config.DefaultAPIVersion)
-	assert.Equal(t, ctx.videoEndpointBase, config.DefaultVideoBase)
+	assert.Equal(t, ctx.endpointBase, DefaultAPIBase)
+	assert.Equal(t, ctx.version, DefaultAPIVersion)
+	assert.Equal(t, ctx.videoEndpointBase, DefaultVideoBase)
 }
 
-func TestNewContext2(t *testing.T) {
+func TestNewContextWithToken(t *testing.T) {
 	ctx := NewContext(
 		AccessToken(accessToken),
 		AppSecret(appSecret),
@@ -35,7 +33,7 @@ func TestNewContext2(t *testing.T) {
 	assert.Equal(t, appSecret, ctx.appSecret)
 }
 
-func TestNewContext3(t *testing.T) {
+func TestNewContextWithAppID(t *testing.T) {
 	ctx := NewContext(
 		AppID(appID),
 	)
@@ -46,9 +44,9 @@ func TestNewContext3(t *testing.T) {
 	assert.Equal(t, appID, ctx.appID)
 }
 
-func TestNewContext4(t *testing.T) {
+func TestNewContextWithLog(t *testing.T) {
 	mocker := loggerMock{}
-	mocker.On("Log", mock.Anything).Once()
+	mocker.On("Log", mock.Anything, mock.Anything, mock.Anything).Once()
 
 	ctx := NewContext(
 		Logger(mocker.Log),
@@ -61,7 +59,7 @@ func TestNewContext4(t *testing.T) {
 
 	ctx.Log("hello", "tien", "!")
 
-	mocker.AssertCalled(t, "Log", mock.Anything)
+	mocker.AssertCalled(t, "Log", "hello", "tien", "!")
 }
 
 func TestSHA256_OK(t *testing.T) {
