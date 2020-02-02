@@ -50,7 +50,7 @@ func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options
 		endpoint:  endpoint,
 		method:    method,
 		executor:  NewDefaultRequestExecutor(),
-		unmarshal: ParseAPINodeList,
+		unmarshal: ParserResponse,
 	}
 
 	for _, option := range options {

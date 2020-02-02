@@ -24,7 +24,7 @@ type APINodeList struct {
 	appSecret      string
 }
 
-func ParseAPINodeList(data json.RawMessage) (APIResponse, error) {
+func ParserResponse(data json.RawMessage) (APIResponse, error) {
 	nodeList := APINodeList{}
 	if err := json.Unmarshal(data, &nodeList); err != nil {
 		return nodeList, err
@@ -32,11 +32,7 @@ func ParseAPINodeList(data json.RawMessage) (APIResponse, error) {
 	return nodeList, nil
 }
 
-func (n APINodeList) GetRawResponse() []byte {
-	return n.body
-}
-
-func (n APINodeList) GetRawResponseAsJsonObject() json.RawMessage {
+func (n APINodeList) GetBody() []byte {
 	return n.body
 }
 

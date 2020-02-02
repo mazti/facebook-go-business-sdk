@@ -1,7 +1,9 @@
 package adaccount
 
 import (
+	"fmt"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
+	"net/http"
 )
 
 type AdAccount struct {
@@ -19,10 +21,30 @@ func NewAdAccount(id string, context *sdk.APIContext) *AdAccount {
 	return adAccount
 }
 
+func (ent *AdAccount) getPrefixID() string {
+	return fmt.Sprintf(prefix, ent.ID)
+}
+
 func (ent *AdAccount) Fetch() (*AdAccount, error) {
-	return FetchByID(ent.ID, ent.node.Context)
+	obj, err := FetchByID(ent.getPrefixID(), ent.node.Context)
+	if err != nil {
+		return nil, err
+	}
+	// TODO: check copy value
+	return obj, nil
 }
 
 func FetchByID(id string, context *sdk.APIContext) (*AdAccount, error) {
+	req := sdk.NewAPIRequest(
+		context,
+		id,
+		sdk.DefaultEndpoint,
+		http.MethodGet,
+		sdk.Parser(sdk.ParserResponse),
+	)
+	_, err := req.Execute()
+	if err != nil {
+		return nil, err
+	}
 	return nil, nil
 }

@@ -46,7 +46,7 @@ func TestNewContextWithAppID(t *testing.T) {
 
 func TestNewContextWithLog(t *testing.T) {
 	mocker := loggerMock{}
-	mocker.On("Log", mock.Anything).Once()
+	mocker.On("Log", mock.Anything, mock.Anything, mock.Anything).Once()
 
 	ctx := NewContext(
 		Logger(mocker.Log),
@@ -59,7 +59,7 @@ func TestNewContextWithLog(t *testing.T) {
 
 	ctx.Log("hello", "tien", "!")
 
-	mocker.AssertCalled(t, "Log", mock.Anything)
+	mocker.AssertCalled(t, "Log", "hello", "tien", "!")
 }
 
 func TestSHA256_OK(t *testing.T) {

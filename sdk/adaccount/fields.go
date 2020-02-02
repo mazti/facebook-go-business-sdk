@@ -1,6 +1,10 @@
 package adaccount
 
-var Fields = []string{
+const (
+	prefix = "act_%s"
+)
+
+var fields = []string{
 	"account_id",
 	"account_status",
 	"ad_account_creation_request",
