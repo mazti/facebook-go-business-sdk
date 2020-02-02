@@ -8,6 +8,7 @@ import (
 
 func main() {
 	context := sdk.NewContext(
+		sdk.AppID(AppID),
 		sdk.AppSecret(AppSecret),
 		sdk.AccessToken(AccessToken),
 		sdk.Logger(Log),

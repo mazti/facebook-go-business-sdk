@@ -22,7 +22,9 @@ func NewAdAccount(id string, context *sdk.APIContext) *AdAccount {
 }
 
 func ParserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdAccount{}
+	ent := &AdAccount{
+		node: sdk.CreateAPINode(nil),
+	}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}
@@ -36,7 +38,9 @@ func FetchByID(id string, context *sdk.APIContext) (*AdAccount, error) {
 		sdk.DefaultEndpoint,
 		http.MethodGet,
 		sdk.Parser(ParserResponse),
+		sdk.RequestFields(fields),
 	)
+	//map[string]interface{}{"page_id": "abc"}
 	ent, err := req.Execute()
 	if err != nil {
 		return nil, err
