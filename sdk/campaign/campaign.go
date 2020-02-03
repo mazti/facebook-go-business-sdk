@@ -26,7 +26,7 @@ func CreateGetCampaignsRequest(id string, context *sdk.APIContext) *sdk.APIReque
 		endpoint,
 		http.MethodGet,
 		sdk.Parser(sdk.ParserResponse),
-		sdk.RequestParams(params),
-		sdk.RequestFields(fields),
+		sdk.ParamNames(params),
+		sdk.ReturnFields(fields),
 	)
 }

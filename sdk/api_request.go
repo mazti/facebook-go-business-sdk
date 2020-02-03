@@ -67,13 +67,13 @@ func Parser(unmarshal func(json json.RawMessage) (APIResponse, error)) func(*API
 	}
 }
 
-func RequestFields(fields []string) func(*APIRequest) {
+func ReturnFields(fields []string) func(*APIRequest) {
 	return func(req *APIRequest) {
 		req.returnFields = fields
 	}
 }
 
-func RequestParams(params []string) func(*APIRequest) {
+func ParamNames(params []string) func(*APIRequest) {
 	return func(req *APIRequest) {
 		req.paramNames = params
 	}

@@ -14,6 +14,7 @@ type AdAccount struct {
 	ID            string `json:"id"`
 	AccountID     string `json:"account_id"`
 	AccountStatus int64  `json:"account_status"`
+	// TODO: adding more field here
 }
 
 func NewAdAccount(id string, context *sdk.APIContext) *AdAccount {
@@ -30,7 +31,7 @@ func FetchByID(id string, context *sdk.APIContext) (*AdAccount, error) {
 		sdk.DefaultEndpoint,
 		http.MethodGet,
 		sdk.Parser(parserResponse),
-		sdk.RequestFields(fields),
+		sdk.ReturnFields(fields),
 	)
 	ent, err := req.Execute()
 	if err != nil {
