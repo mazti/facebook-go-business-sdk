@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
+	"github.com/mazti/facebook-go-business-sdk/sdk/campaign"
 	"net/http"
+	"strings"
 )
 
 type AdAccount struct {
@@ -45,13 +47,19 @@ func (ent *AdAccount) Fetch() (*AdAccount, error) {
 	if err != nil {
 		return nil, err
 	}
+	obj.ID = strings.Replace(obj.ID, "act_", "", 1)
 	// TODO: check copy value
+	obj.node = ent.node
 	return obj, nil
 }
 
 func (ent *AdAccount) GetCampaigns() (*sdk.APINodeList, error) {
-
-	return nil, nil
+	req := campaign.CreateGetCampaignsRequest(ent.getPrefixID(), ent.node.Context)
+	resp, err := req.Execute()
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*sdk.APINodeList), nil
 }
 
 //

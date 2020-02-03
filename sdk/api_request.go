@@ -73,6 +73,12 @@ func RequestFields(fields []string) func(*APIRequest) {
 	}
 }
 
+func RequestParams(params []string) func(*APIRequest) {
+	return func(req *APIRequest) {
+		req.paramNames = params
+	}
+}
+
 func (req *APIRequest) Execute() (APIResponse, error) {
 	return req.ExecuteWithParams(nil)
 }
