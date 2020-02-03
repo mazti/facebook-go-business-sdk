@@ -15,10 +15,16 @@ func main() {
 		sdk.Debug(true),
 	)
 
-	account := adaccount.NewAdAccount("2745055142177332", context)
+	account := adaccount.NewAdAccount(AccountID, context)
 
 	account, err := account.Fetch()
-
 	context.Log(err)
 	context.Log(account.AccountID, account.AccountStatus)
+
+	context.Log("---- Campaign ----")
+
+	campaigns, err := account.GetCampaigns()
+	context.Log(err)
+	context.Log(string(campaigns.Data))
+
 }
