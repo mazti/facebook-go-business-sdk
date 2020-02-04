@@ -2,6 +2,9 @@ package sdk
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
+	"net/url"
 )
 
 type Cursors struct {
@@ -23,12 +26,6 @@ type APINodeList struct {
 	appSecret      string
 }
 
-func createAPINodeList() *APINodeList {
-	return &APINodeList{
-		node: &APINode{},
-	}
-}
-
 func ParserResponse(data json.RawMessage) (APIResponse, error) {
 	nodeList := createAPINodeList()
 	if err := json.Unmarshal(data, nodeList); err != nil {
@@ -37,12 +34,74 @@ func ParserResponse(data json.RawMessage) (APIResponse, error) {
 	return nodeList, nil
 }
 
+func (ent *APINodeList) Next(limit int) (*APINodeList, error) {
+	// First check if 'next' url is returned. If so, always use the it.
+	if len(ent.Paging.Next) > 0 {
+		// App secret won't return with the 'next' URL. Need to append it  for paging.
+		nextURL := ent.getNextURL()
+		ent.request.SetOverrideURL(nextURL)
+		resp, err := ent.request.Execute()
+		if err != nil {
+			return nil, err
+		}
+		return resp.(*APINodeList), nil
+	}
+	after := ent.Paging.Cursors.After
+	if len(after) < 1 {
+		return nil, errors.New("after empty")
+	}
+	ent.request.SetOverrideURL("")
+	extraParams := map[string]interface{}{
+		afterKey: after,
+	}
+	if limit > 0 {
+		extraParams[limitKey] = limit
+	}
+	resp, err := ent.request.ExecuteWithParams(extraParams)
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*APINodeList), nil
+}
+
+//
+// Internal functions
+//
+func createAPINodeList() *APINodeList {
+	return &APINodeList{
+		node: &APINode{},
+	}
+}
+
+func (ent APINodeList) getNextURL() string {
+	if len(ent.appSecret) < 1 {
+		return ent.Paging.Next
+	}
+	nextURL, err := url.Parse(ent.Paging.Next)
+	if err != nil {
+		return ""
+	}
+	connector := "?"
+	if len(nextURL.Query()) > 0 {
+		connector = "&"
+	}
+	return fmt.Sprintf("%s%s%s=%s",
+		ent.Paging.Next, connector, appSecretProofKey, ent.appSecret)
+}
+
+//
+// Functions for APINode
+//
 func (ent APINodeList) GetBody() []byte {
 	return ent.node.GetBody()
 }
 
 func (ent APINodeList) GetHeader() []byte {
 	return ent.node.GetHeader()
+}
+
+func (ent *APINodeList) SetRequest(request *APIRequest) {
+	ent.request = request
 }
 
 func (ent *APINodeList) SetBody(body []byte) {

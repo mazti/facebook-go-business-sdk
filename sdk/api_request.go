@@ -7,9 +7,11 @@ import (
 )
 
 const (
-	accessTokenKey = "access_token"
-	appSecretProof = "appsecret_proof"
-	fields         = "fields"
+	accessTokenKey    = "access_token"
+	appSecretProofKey = "appsecret_proof"
+	fieldsKey         = "fields"
+	limitKey          = "limit"
+	afterKey          = "after"
 )
 
 // ResponseWrapper ...
@@ -89,6 +91,10 @@ func (req *APIRequest) ExecuteWithParams(extraParams map[string]interface{}) (AP
 	return req.lastResponse, nil
 }
 
+func (req *APIRequest) SetOverrideURL(url string) {
+	req.overrideURL = url
+}
+
 func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *ResponseWrapper {
 	ctx := req.context
 	ctx.Log("========Start of API Call========")
@@ -107,6 +113,7 @@ func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
 		if err == nil && resp != nil {
 			resp.SetBody(body)
 			resp.SetHeader(header)
+			resp.SetRequest(req)
 			return resp
 		}
 	}
@@ -143,10 +150,10 @@ func (req *APIRequest) getAllParams(extraParams map[string]interface{}) (allPara
 	}
 	allParams[accessTokenKey] = ctx.accessToken
 	if len(ctx.appSecret) > 0 {
-		allParams[appSecretProof] = ctx.GetAppSecretProof()
+		allParams[appSecretProofKey] = ctx.GetAppSecretProof()
 	}
 	if len(req.returnFields) > 0 {
-		allParams[fields] = strings.Join(req.returnFields, ",")
+		allParams[fieldsKey] = strings.Join(req.returnFields, ",")
 	}
 	return allParams
 }

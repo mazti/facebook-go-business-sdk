@@ -21,10 +21,15 @@ func main() {
 	context.Log(err)
 	context.Log(account.AccountID, account.AccountStatus)
 
-	context.Log("---- Campaign ----")
-
 	campaigns, err := account.GetCampaigns()
-	context.Log(err)
-	context.Log(string(campaigns.Data))
+
+	for campaigns != nil {
+		context.Log("---- Campaign ----")
+
+		context.Log(err)
+		context.Log(string(campaigns.Data))
+
+		campaigns, err = campaigns.Next(0)
+	}
 
 }
