@@ -2,6 +2,7 @@ package sdk
 
 type APINode struct {
 	Context *APIContext
+	Request *APIRequest
 	Body    []byte
 	Header  []byte
 }
@@ -26,6 +27,10 @@ func (ent APINode) GetBody() []byte {
 
 func (ent APINode) GetHeader() []byte {
 	return ent.Header
+}
+
+func (ent *APINode) SetRequest(request *APIRequest) {
+	ent.Request = request
 }
 
 func (ent *APINode) SetBody(body []byte) {
