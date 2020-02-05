@@ -64,6 +64,13 @@ func (ent *APINodeList) Next(limit int) (*APINodeList, error) {
 	return resp.(*APINodeList), nil
 }
 
+func (ent APINodeList) Unmarshal(v interface{}) error {
+	if err := json.Unmarshal(ent.Data, v); err != nil {
+		return err
+	}
+	return nil
+}
+
 //
 // Internal functions
 //

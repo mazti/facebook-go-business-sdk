@@ -1,8 +1,6 @@
 package main
 
 import (
-	"encoding/json"
-
 	. "github.com/mazti/facebook-go-business-sdk/example"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adaccount"
@@ -32,7 +30,7 @@ func main() {
 	context.Log("-----")
 	var adaccounts []adaccount.AdAccount
 
-	err = json.Unmarshal(nodeList.Data, &adaccounts)
+	err = nodeList.Unmarshal(&adaccounts)
 	if err != nil {
 		context.Log(err)
 		return

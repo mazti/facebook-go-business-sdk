@@ -4,6 +4,7 @@ import (
 	. "github.com/mazti/facebook-go-business-sdk/example"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adaccount"
+	"github.com/mazti/facebook-go-business-sdk/sdk/campaign"
 )
 
 func main() {
@@ -18,18 +19,22 @@ func main() {
 	account := adaccount.NewAdAccount(AccountID, context)
 
 	account, err := account.Fetch()
-	context.Log(err)
+	context.Log("fetch err:", err)
 	context.Log(account.AccountID, account.AccountStatus)
 
-	campaigns, err := account.GetCampaigns()
-
-	for campaigns != nil {
+	nodeList, err := account.GetCampaigns()
+	context.Log("get campaigns err:", err)
+	for nodeList != nil {
 		context.Log("---- Campaign ----")
 
-		context.Log(err)
-		context.Log(string(campaigns.Data))
+		var campaigns []campaign.Campaign
+		err := nodeList.Unmarshal(&campaigns)
 
-		campaigns, err = campaigns.Next(0)
+		context.Log(err)
+		context.Log("campaigns:", campaigns)
+
+		nodeList, err = nodeList.Next(0)
+		context.Log("next err:", err)
 	}
 
 }
