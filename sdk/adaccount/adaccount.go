@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
+	"github.com/mazti/facebook-go-business-sdk/sdk/adsinsights"
 	"github.com/mazti/facebook-go-business-sdk/sdk/campaign"
 	"net/http"
 	"strings"
@@ -61,6 +62,15 @@ func (ent *AdAccount) GetCampaigns() (*sdk.APINodeList, error) {
 		return nil, err
 	}
 	return resp.(*sdk.APINodeList), nil
+}
+
+func (ent *AdAccount) GetInsights() (*adsinsights.AdsInsights, error) {
+	req := adsinsights.CreateGetAdsInsightsRequest(ent.getPrefixID(), ent.node.Context)
+	resp, err := req.Execute()
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*adsinsights.AdsInsights), nil
 }
 
 //
