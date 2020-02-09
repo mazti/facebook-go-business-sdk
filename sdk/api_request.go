@@ -111,14 +111,13 @@ func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
 	if req.unmarshal != nil {
 		resp, err := req.unmarshal(body)
 		if err == nil && resp != nil {
-			resp.SetBody(body)
-			resp.SetHeader(header)
-			resp.SetRequest(req)
+			resp.Load(req.context, req, header, body)
 			return resp
 		}
 	}
-	return LoadJSON(
+	return Load(
 		req.context,
+		req,
 		body,
 		header,
 	)

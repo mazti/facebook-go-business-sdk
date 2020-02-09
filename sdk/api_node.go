@@ -13,30 +13,22 @@ func CreateAPINode(context *APIContext) *APINode {
 	}
 }
 
-func LoadJSON(ctx *APIContext, body []byte, header []byte) *APINode {
-	return &APINode{
-		Context: ctx,
-		Body:    body,
-		Header:  header,
-	}
-}
-
-func (ent APINode) GetBody() []byte {
-	return ent.Body
-}
-
-func (ent APINode) GetHeader() []byte {
-	return ent.Header
-}
-
-func (ent *APINode) SetRequest(request *APIRequest) {
-	ent.Request = request
-}
-
-func (ent *APINode) SetBody(body []byte) {
+func (ent *APINode) Load(context *APIContext, req *APIRequest, header []byte, body []byte) {
+	ent.Context = context
+	ent.Request = req
+	ent.Header = header
 	ent.Body = body
 }
 
-func (ent *APINode) SetHeader(header []byte) {
-	ent.Header = header
+func (ent *APINode) SetContext(context *APIContext) {
+	ent.Context = context
+}
+
+func Load(context *APIContext, req *APIRequest, body []byte, header []byte) *APINode {
+	return &APINode{
+		Context: context,
+		Request: req,
+		Body:    body,
+		Header:  header,
+	}
 }
