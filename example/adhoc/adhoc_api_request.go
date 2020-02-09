@@ -30,11 +30,16 @@ func main() {
 	context.Log("-----")
 	var adaccounts []adaccount.AdAccount
 
+	// TODO: improve parseResponse
 	err = nodeList.Unmarshal(&adaccounts)
 	if err != nil {
 		context.Log(err)
 		return
 	}
+	for i := 0; i < len(adaccounts); i++ {
+		adaccounts[i].SetContext(context)
+	}
+
 	context.Log(adaccounts)
 
 	context.Log("-----")

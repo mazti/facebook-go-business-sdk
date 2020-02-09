@@ -4,22 +4,10 @@ import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 )
 
-func (ent AdsInsights) GetBody() []byte {
-	return ent.node.GetBody()
+func (ent *AdsInsights) Load(context *sdk.APIContext, req *sdk.APIRequest, header []byte, body []byte) {
+	ent.node.Load(context, req, header, body)
 }
 
-func (ent AdsInsights) GetHeader() []byte {
-	return ent.node.GetBody()
-}
-
-func (ent *AdsInsights) SetRequest(request *sdk.APIRequest) {
-	ent.node.SetRequest(request)
-}
-
-func (ent *AdsInsights) SetBody(body []byte) {
-	ent.node.SetBody(body)
-}
-
-func (ent *AdsInsights) SetHeader(header []byte) {
-	ent.node.SetHeader(header)
+func (ent *AdsInsights) SetContext(context *sdk.APIContext) {
+	ent.node.SetContext(context)
 }

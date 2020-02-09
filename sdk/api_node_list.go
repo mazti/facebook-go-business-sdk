@@ -26,6 +26,7 @@ type APINodeList struct {
 	appSecret      string
 }
 
+// TODO: improve ParserResponse
 func ParserResponse(data json.RawMessage) (APIResponse, error) {
 	nodeList := createAPINodeList()
 	if err := json.Unmarshal(data, nodeList); err != nil {
@@ -100,22 +101,11 @@ func (ent APINodeList) getNextURL() string {
 //
 // Functions for APINode
 //
-func (ent APINodeList) GetBody() []byte {
-	return ent.node.GetBody()
+
+func (ent *APINodeList) Load(context *APIContext, req *APIRequest, header []byte, body []byte) {
+	ent.node.Load(context, req, header, body)
 }
 
-func (ent APINodeList) GetHeader() []byte {
-	return ent.node.GetHeader()
-}
-
-func (ent *APINodeList) SetRequest(request *APIRequest) {
-	ent.request = request
-}
-
-func (ent *APINodeList) SetBody(body []byte) {
-	ent.node.SetBody(body)
-}
-
-func (ent *APINodeList) SetHeader(header []byte) {
-	ent.node.SetHeader(header)
+func (ent *APINodeList) SetContext(context *APIContext) {
+	ent.node.SetContext(context)
 }
