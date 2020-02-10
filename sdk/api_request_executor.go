@@ -3,7 +3,6 @@ package sdk
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
@@ -47,7 +46,7 @@ func (e *DefaultRequestExecutor) Execute(method, apiURL string, params map[strin
 	if http.MethodDelete == method {
 		return e.SendDelete(apiURL, params, context)
 	}
-	return resp, errors.New("unsupported method")
+	return resp, UnsupportedMethod(method)
 }
 
 func (e *DefaultRequestExecutor) SendGet(apiURL string, params map[string]interface{}, context *APIContext) (resp *ResponseWrapper, err error) {
@@ -129,7 +128,9 @@ func readResponse(resp *http.Response) (*ResponseWrapper, error) {
 		return nil, err
 	}
 	return &ResponseWrapper{
-		Body:   respBody,
-		Header: respHeader,
+		Status:     resp.Status,
+		StatusCode: resp.StatusCode,
+		Body:       respBody,
+		Header:     respHeader,
 	}, nil
 }

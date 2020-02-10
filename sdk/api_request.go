@@ -16,8 +16,10 @@ const (
 
 // ResponseWrapper ...
 type ResponseWrapper struct {
-	Body   []byte
-	Header []byte
+	Status     string
+	StatusCode int
+	Body       []byte
+	Header     []byte
 }
 
 // Unmarshal ...
@@ -86,7 +88,10 @@ func (req *APIRequest) Execute() (APIResponse, error) {
 }
 
 func (req *APIRequest) ExecuteWithParams(extraParams map[string]interface{}) (APIResponse, error) {
-	rw := req.executeInternal(extraParams)
+	rw, err := req.executeInternal(extraParams)
+	if err != nil {
+		return nil, err
+	}
 	req.lastResponse = req.parseResponse(rw.Body, rw.Header)
 	return req.lastResponse, nil
 }
@@ -95,19 +100,20 @@ func (req *APIRequest) SetOverrideURL(url string) {
 	req.overrideURL = url
 }
 
-func (req *APIRequest) executeInternal(extraParams map[string]interface{}) *ResponseWrapper {
+func (req *APIRequest) executeInternal(extraParams map[string]interface{}) (*ResponseWrapper, error) {
 	ctx := req.context
 	ctx.Log("========Start of API Call========")
 	defer ctx.Log("========End of API Call========")
 	resp, err := req.executor.Execute(req.method, req.getURL(), req.getAllParams(extraParams), req.context)
 	if err != nil {
-		return resp
+		return nil, err
 	}
 	ctx.Log("Response:", string(resp.Body))
-	return resp
+	return resp, nil
 }
 
 func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
+	// TODO: parse error message {"error":{"message":"Malformed access token <token>","type":"OAuthException","code":190,"fbtrace_id":"AI3xqjaZLDAl4hv6Ng7KfZ8"}}
 	if req.unmarshal != nil {
 		resp, err := req.unmarshal(body)
 		if err == nil && resp != nil {

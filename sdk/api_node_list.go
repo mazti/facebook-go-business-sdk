@@ -2,7 +2,6 @@ package sdk
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/url"
 )
@@ -26,7 +25,6 @@ type APINodeList struct {
 	appSecret      string
 }
 
-// TODO: improve ParserResponse
 func ParserResponse(data json.RawMessage) (APIResponse, error) {
 	nodeList := &APINodeList{}
 	if err := json.Unmarshal(data, nodeList); err != nil {
@@ -49,7 +47,7 @@ func (ent *APINodeList) Next(limit int) (*APINodeList, error) {
 	}
 	after := ent.Paging.Cursors.After
 	if len(after) < 1 {
-		return nil, errors.New("after empty")
+		return nil, ReachToTheEnd
 	}
 	ent.request.SetOverrideURL("")
 	extraParams := map[string]interface{}{
