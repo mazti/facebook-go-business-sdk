@@ -1,9 +1,8 @@
 package campaign
 
 import (
-	"net/http"
-
 	"github.com/mazti/facebook-go-business-sdk/sdk"
+	"net/http"
 )
 
 const (
@@ -17,6 +16,23 @@ type Campaign struct {
 	AdLabels    string `json:"adlabels"`
 	BidStrategy string `json:"bid_strategy"`
 	// TODO: adding more field here
+}
+
+func ParseResponse(rawResp sdk.APIResponse) (resp []Campaign, err error) {
+	context := rawResp.GetContext()
+	nodeList, ok := rawResp.(*sdk.APINodeList)
+	if !ok {
+		return nil, sdk.UnsupportedResponse
+	}
+	err = nodeList.Unmarshal(&resp)
+	if err != nil {
+		context.Log(err)
+		return
+	}
+	for i := 0; i < len(resp); i++ {
+		resp[i].SetContext(context)
+	}
+	return
 }
 
 func CreateGetCampaignsRequest(id string, context *sdk.APIContext) *sdk.APIRequest {

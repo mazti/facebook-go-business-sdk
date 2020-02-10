@@ -66,7 +66,6 @@ func (ent *APINodeList) Next(limit int) (*APINodeList, error) {
 }
 
 func (ent APINodeList) Unmarshal(v interface{}) error {
-	// TODO: Take care about node context for each value
 	if err := json.Unmarshal(ent.Data, v); err != nil {
 		return err
 	}

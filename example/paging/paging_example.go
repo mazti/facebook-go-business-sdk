@@ -27,9 +27,7 @@ func main() {
 	for nodeList != nil {
 		context.Log("---- Campaign ----")
 
-		var campaigns []campaign.Campaign
-		err := nodeList.Unmarshal(&campaigns)
-
+		campaigns, err := campaign.ParseResponse(nodeList)
 		context.Log(err)
 		context.Log("campaigns:", campaigns)
 
