@@ -11,7 +11,7 @@ const (
 )
 
 type AdsInsights struct {
-	node            *sdk.APINode
+	Context         *sdk.APIContext
 	AccountCurrency string `json:"account_currency"`
 	AccountID       string `json:"account_id"`
 	AccountName     string `json:"account_name"`
@@ -37,9 +37,7 @@ func CreateGetAdsInsightsRequest(id string, context *sdk.APIContext) *sdk.APIReq
 }
 
 func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdsInsights{
-		node: sdk.CreateAPINode(nil),
-	}
+	ent := &AdsInsights{}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}

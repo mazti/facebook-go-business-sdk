@@ -7,21 +7,12 @@ type APINode struct {
 	Header  []byte
 }
 
-func CreateAPINode(context *APIContext) *APINode {
-	return &APINode{
-		Context: context,
-	}
-}
-
-func (ent *APINode) Load(context *APIContext, req *APIRequest, header []byte, body []byte) {
-	ent.Context = context
-	ent.Request = req
-	ent.Header = header
-	ent.Body = body
-}
-
 func (ent *APINode) SetContext(context *APIContext) {
 	ent.Context = context
+}
+
+func (ent *APINode) GetContext() *APIContext {
+	return ent.Context
 }
 
 func Load(context *APIContext, req *APIRequest, body []byte, header []byte) *APINode {

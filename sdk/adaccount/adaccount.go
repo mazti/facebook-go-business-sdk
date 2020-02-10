@@ -3,11 +3,12 @@ package adaccount
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adsinsights"
 	"github.com/mazti/facebook-go-business-sdk/sdk/campaign"
-	"net/http"
-	"strings"
 )
 
 type AdAccount struct {
@@ -70,6 +71,24 @@ func (ent *AdAccount) GetInsights() (*adsinsights.AdsInsights, error) {
 		return nil, err
 	}
 	return resp.(*adsinsights.AdsInsights), nil
+}
+
+func ParseResponse(rawResp sdk.APIResponse) (resp []AdAccount, err error) {
+	context := rawResp.GetContext()
+	nodeList, ok := rawResp.(*sdk.APINodeList)
+	if !ok {
+		return nil, sdk.UnsupportedResponse
+	}
+	err = nodeList.Unmarshal(&resp)
+	if err != nil {
+		context.Log(err)
+		return
+	}
+	for i := 0; i < len(resp); i++ {
+		resp[i].ID = strings.Replace(resp[i].ID, "act_", "", 1)
+		resp[i].SetContext(context)
+	}
+	return
 }
 
 //

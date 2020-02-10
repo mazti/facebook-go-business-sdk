@@ -11,7 +11,7 @@ const (
 )
 
 type Campaign struct {
-	node        *sdk.APINode
+	Context     *sdk.APIContext
 	ID          string `json:"id"`
 	AccountID   string `json:"account_id"`
 	AdLabels    string `json:"adlabels"`
