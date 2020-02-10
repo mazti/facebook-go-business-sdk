@@ -18,7 +18,7 @@ type Paging struct {
 }
 
 type APINodeList struct {
-	node           *APINode
+	Context        *APIContext
 	Paging         Paging          `json:"paging"`
 	Data           json.RawMessage `json:"data,omitempty"`
 	request        *APIRequest
@@ -28,7 +28,7 @@ type APINodeList struct {
 
 // TODO: improve ParserResponse
 func ParserResponse(data json.RawMessage) (APIResponse, error) {
-	nodeList := createAPINodeList()
+	nodeList := &APINodeList{}
 	if err := json.Unmarshal(data, nodeList); err != nil {
 		return nil, err
 	}
@@ -76,12 +76,6 @@ func (ent APINodeList) Unmarshal(v interface{}) error {
 //
 // Internal functions
 //
-func createAPINodeList() *APINodeList {
-	return &APINodeList{
-		node: &APINode{},
-	}
-}
-
 func (ent APINodeList) getNextURL() string {
 	if len(ent.appSecret) < 1 {
 		return ent.Paging.Next
@@ -101,11 +95,10 @@ func (ent APINodeList) getNextURL() string {
 //
 // Functions for APINode
 //
-
-func (ent *APINodeList) Load(context *APIContext, req *APIRequest, header []byte, body []byte) {
-	ent.node.Load(context, req, header, body)
+func (ent *APINodeList) SetContext(context *APIContext) {
+	ent.Context = context
 }
 
-func (ent *APINodeList) SetContext(context *APIContext) {
-	ent.node.SetContext(context)
+func (ent *APINodeList) GetContext() *APIContext {
+	return ent.Context
 }

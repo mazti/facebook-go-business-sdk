@@ -111,7 +111,7 @@ func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
 	if req.unmarshal != nil {
 		resp, err := req.unmarshal(body)
 		if err == nil && resp != nil {
-			resp.Load(req.context, req, header, body)
+			resp.SetContext(req.context)
 			return resp
 		}
 	}

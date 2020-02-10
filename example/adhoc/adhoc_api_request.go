@@ -13,6 +13,7 @@ func main() {
 		sdk.Logger(Log),
 		sdk.Debug(true),
 	)
+
 	req := sdk.NewAPIRequest(
 		context,
 		"me",
@@ -25,23 +26,14 @@ func main() {
 		return
 	}
 
-	nodeList := resp.(*sdk.APINodeList)
-
 	context.Log("-----")
-	var adaccounts []adaccount.AdAccount
-
-	// TODO: improve parseResponse
-	err = nodeList.Unmarshal(&adaccounts)
+	adaccounts, err := adaccount.ParseResponse(resp)
 	if err != nil {
 		context.Log(err)
 		return
 	}
-	for i := 0; i < len(adaccounts); i++ {
-		adaccounts[i].SetContext(context)
-	}
 
 	context.Log(adaccounts)
-
 	context.Log("-----")
 	insights, err := adaccounts[0].GetInsights()
 	if err != nil {
