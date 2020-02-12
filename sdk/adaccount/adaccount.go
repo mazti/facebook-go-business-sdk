@@ -65,7 +65,7 @@ func (ent *AdAccount) GetCampaigns() (*sdk.APINodeList, error) {
 }
 
 func (ent *AdAccount) GetInsights() (*adsinsights.AdsInsights, error) {
-	req := adsinsights.CreateGetAdsInsightsRequest(ent.getPrefixID(), ent.Context)
+	req := adsinsights.CreateAPIRequestGet(ent.getPrefixID(), ent.Context)
 	resp, err := req.Execute()
 	if err != nil {
 		return nil, err
