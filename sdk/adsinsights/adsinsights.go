@@ -25,7 +25,7 @@ type AdsInsights struct {
 	// TODO: adding more field here
 }
 
-func CreateGetAdsInsightsRequest(id string, context *sdk.APIContext) *sdk.APIRequest {
+func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 	return sdk.NewAPIRequest(
 		context,
 		id,
