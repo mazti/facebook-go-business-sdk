@@ -35,7 +35,7 @@ func ParseResponse(rawResp sdk.APIResponse) (resp []Campaign, err error) {
 	return
 }
 
-func CreateGetCampaignsRequest(id string, context *sdk.APIContext) *sdk.APIRequest {
+func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 	return sdk.NewAPIRequest(
 		context,
 		id,

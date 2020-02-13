@@ -56,7 +56,7 @@ func (ent *AdAccount) Fetch() (*AdAccount, error) {
 }
 
 func (ent *AdAccount) GetCampaigns() (*sdk.APINodeList, error) {
-	req := campaign.CreateGetCampaignsRequest(ent.getPrefixID(), ent.Context)
+	req := campaign.CreateAPIRequestGet(ent.getPrefixID(), ent.Context)
 	resp, err := req.Execute()
 	if err != nil {
 		return nil, err
