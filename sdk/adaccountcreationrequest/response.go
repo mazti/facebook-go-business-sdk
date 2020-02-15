@@ -1,4 +1,4 @@
-package campaign
+package adaccountcreationrequest
 
 import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"

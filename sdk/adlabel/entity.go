@@ -11,7 +11,7 @@ const (
 	endpoint = "/"
 )
 
-type AdLabel struct {
+type Entity struct {
 	Context *sdk.APIContext
 
 	ID   string `json:"id"`
@@ -33,7 +33,7 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 }
 
 func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdLabel{}
+	ent := &Entity{}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}

@@ -1,4 +1,4 @@
-package campaign
+package reachfrequencyspec
 
 import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"

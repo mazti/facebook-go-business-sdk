@@ -15,44 +15,44 @@ const (
 	endpoint = "/campaigns"
 )
 
-type Campaign struct {
+type Entity struct {
 	Context *sdk.APIContext
 
-	AccountId               string                                    `json:"account_id"`
-	Adlabels                []adlabel.AdLabel                         `json:"adlabels"`
-	BidStrategy             BidStrategy                               `json:"bid_strategy"`
-	BoostedObjectId         string                                    `json:"boosted_object_id"`
-	BrandLiftStudies        []adstudy.AdStudy                         `json:"brand_lift_studies"`
-	BudgetRebalanceFlag     bool                                      `json:"budget_rebalance_flag"`
-	BudgetRemaining         string                                    `json:"budget_remaining"`
-	BuyingType              string                                    `json:"buying_type"`
-	CanCreateBrandLiftStudy bool                                      `json:"can_create_brand_lift_study"`
-	CanUseSpendCap          bool                                      `json:"can_use_spend_cap"`
-	ConfiguredStatus        ConfiguredStatus                          `json:"configured_status"`
-	CreatedTime             string                                    `json:"created_time"`
-	DailyBudget             string                                    `json:"daily_budget"`
-	EffectiveStatus         EffectiveStatus                           `json:"effective_status"`
-	ID                      string                                    `json:"id"`
-	IssuesInfo              []adcampaignissueinfo.AdCampaignIssueInfo `json:"issues_info"`
-	LastBudgetTogglingTime  string                                    `json:"last_budget_toggling_time"`
-	LifetimeBudget          string                                    `json:"lifetime_budget"`
-	Name                    string                                    `json:"name"`
-	Objective               string                                    `json:"objective"`
-	PacingType              []string                                  `json:"pacing_type"`
-	PromotedObject          adpromotedobject.AdPromotedObject         `json:"promoted_object"`
-	Recommendations         []adrecommendation.AdRecommendation       `json:"recommendations"`
-	SourceCampaign          *Campaign                                 `json:"source_campaign"`
-	SourceCampaignId        string                                    `json:"source_campaign_id"`
-	SpecialAdCategory       string                                    `json:"special_ad_category"`
-	SpendCap                string                                    `json:"spend_cap"`
-	StartTime               string                                    `json:"start_time"`
-	Status                  Status                                    `json:"status"`
-	StopTime                string                                    `json:"stop_time"`
-	ToplineID               string                                    `json:"topline_id"`
-	UpdatedTime             string                                    `json:"updated_time"`
+	AccountId               string                       `json:"account_id"`
+	Adlabels                []adlabel.Entity             `json:"adlabels"`
+	BidStrategy             BidStrategy                  `json:"bid_strategy"`
+	BoostedObjectId         string                       `json:"boosted_object_id"`
+	BrandLiftStudies        []adstudy.Entity             `json:"brand_lift_studies"`
+	BudgetRebalanceFlag     bool                         `json:"budget_rebalance_flag"`
+	BudgetRemaining         string                       `json:"budget_remaining"`
+	BuyingType              string                       `json:"buying_type"`
+	CanCreateBrandLiftStudy bool                         `json:"can_create_brand_lift_study"`
+	CanUseSpendCap          bool                         `json:"can_use_spend_cap"`
+	ConfiguredStatus        ConfiguredStatus             `json:"configured_status"`
+	CreatedTime             string                       `json:"created_time"`
+	DailyBudget             string                       `json:"daily_budget"`
+	EffectiveStatus         EffectiveStatus              `json:"effective_status"`
+	ID                      string                       `json:"id"`
+	IssuesInfo              []adcampaignissueinfo.Entity `json:"issues_info"`
+	LastBudgetTogglingTime  string                       `json:"last_budget_toggling_time"`
+	LifetimeBudget          string                       `json:"lifetime_budget"`
+	Name                    string                       `json:"name"`
+	Objective               string                       `json:"objective"`
+	PacingType              []string                     `json:"pacing_type"`
+	PromotedObject          adpromotedobject.Entity      `json:"promoted_object"`
+	Recommendations         []adrecommendation.Entity    `json:"recommendations"`
+	SourceEntity            *Entity                      `json:"source_campaign"`
+	SourceEntityId          string                       `json:"source_campaign_id"`
+	SpecialAdCategory       string                       `json:"special_ad_category"`
+	SpendCap                string                       `json:"spend_cap"`
+	StartTime               string                       `json:"start_time"`
+	Status                  Status                       `json:"status"`
+	StopTime                string                       `json:"stop_time"`
+	ToplineID               string                       `json:"topline_id"`
+	UpdatedTime             string                       `json:"updated_time"`
 }
 
-func ParseResponse(rawResp sdk.APIResponse) (resp []Campaign, err error) {
+func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 	context := rawResp.GetContext()
 	nodeList, ok := rawResp.(*sdk.APINodeList)
 	if !ok {
@@ -79,4 +79,12 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 		sdk.ParamNames(params),
 		sdk.ReturnFields(fields),
 	)
+}
+
+func (ent *Entity) GetAds() (*sdk.APINodeList, error) {
+	return nil, nil
+}
+
+func (ent *Entity) GetAdSets() (*sdk.APINodeList, error) {
+	return nil, nil
 }

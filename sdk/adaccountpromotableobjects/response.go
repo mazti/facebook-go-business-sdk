@@ -1,4 +1,4 @@
-package campaign
+package adaccountpromotableobjects
 
 import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"

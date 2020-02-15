@@ -10,7 +10,7 @@ const (
 	endpoint = "/"
 )
 
-type AdRecommendation struct {
+type Entity struct {
 	Context *sdk.APIContext
 	// TODO: adding more field here
 }
@@ -27,7 +27,7 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 }
 
 func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdRecommendation{}
+	ent := &Entity{}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}
