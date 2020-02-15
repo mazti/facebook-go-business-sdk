@@ -1,4 +1,4 @@
-package adsinsights
+package adset
 
 import (
 	"encoding/json"

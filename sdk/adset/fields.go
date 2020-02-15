@@ -1,4 +1,4 @@
-package adsinsights
+package adset
 
 var (
 	params = []string{
