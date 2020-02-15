@@ -1,4 +1,4 @@
-package adaccount
+package adsactionstats
 
 import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"
