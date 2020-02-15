@@ -1,4 +1,4 @@
-package adsinsights
+package reachfrequencyspec
 
 import (
 	"encoding/json"
@@ -7,21 +7,11 @@ import (
 )
 
 const (
-	endpoint = "/insights"
+	endpoint = "/"
 )
 
 type Entity struct {
-	Context         *sdk.APIContext
-	AccountCurrency string `json:"account_currency"`
-	AccountID       string `json:"account_id"`
-	AccountName     string `json:"account_name"`
-
-	ActionsPerImpression string `json:"actions_per_impression"`
-	ActivityRecency      string `json:"activity_recency"`
-
-	AdBidType  string `json:"ad_bid_type"`
-	AdBidValue string `json:"ad_bid_value"`
-
+	Context *sdk.APIContext
 	// TODO: adding more field here
 }
 
@@ -32,7 +22,7 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 		endpoint,
 		http.MethodGet,
 		sdk.Parser(parserResponse),
-		sdk.ParamNames(params),
+		sdk.ReturnFields(fields),
 	)
 }
 

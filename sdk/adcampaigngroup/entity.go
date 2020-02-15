@@ -12,7 +12,7 @@ const (
 	endpoint = "/"
 )
 
-type AdCampaignGroupActivity struct {
+type Entity struct {
 	Context *sdk.APIContext
 
 	BudgetLimitNew          interface{} `json:"budget_limit_new"`
@@ -52,7 +52,7 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 	)
 }
 
-func FetchByID(id string, context *sdk.APIContext) (*AdCampaignGroupActivity, error) {
+func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
 	req := sdk.NewAPIRequest(
 		context,
 		id,
@@ -66,13 +66,13 @@ func FetchByID(id string, context *sdk.APIContext) (*AdCampaignGroupActivity, er
 		return nil, err
 	}
 
-	account := ent.(*AdCampaignGroupActivity)
+	account := ent.(*Entity)
 	account.ID = strings.Replace(account.ID, "act_", "", 1)
 
 	return account, nil
 }
 
-func (ent *AdCampaignGroupActivity) Fetch() (*AdCampaignGroupActivity, error) {
+func (ent *Entity) Fetch() (*Entity, error) {
 	obj, err := FetchByID(ent.getPrefixID(), ent.Context)
 	if err != nil {
 		return nil, err
@@ -85,18 +85,18 @@ func (ent *AdCampaignGroupActivity) Fetch() (*AdCampaignGroupActivity, error) {
 // For internal usage
 //
 func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdCampaignGroupActivity{}
+	ent := &Entity{}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}
 	return ent, nil
 }
 
-func (ent *AdCampaignGroupActivity) getPrefixID() string {
+func (ent *Entity) getPrefixID() string {
 	return ent.ID
 }
 
-func (ent *AdCampaignGroupActivity) copy(other *AdCampaignGroupActivity) {
+func (ent *Entity) copy(other *Entity) {
 	ent.BudgetLimitNew = other.BudgetLimitNew
 	ent.BudgetLimitOld = other.BudgetLimitOld
 	ent.BuyingTypeNew = other.BuyingTypeNew

@@ -1,0 +1,47 @@
+package ad
+
+var (
+	params = []string{
+		"am_call_tags",
+		"date_preset",
+		"from_adtable",
+		"review_feedback_breakdown",
+		"time_range",
+	}
+	fields = []string{
+		"account_id",
+		"ad_review_feedback",
+		"adlabels",
+		"adset",
+		"adset_id",
+		"bid_amount",
+		"bid_info",
+		"bid_type",
+		"campaign",
+		"campaign_id",
+		"configured_status",
+		"conversion_specs",
+		"created_time",
+		"creative",
+		"demolink_hash",
+		"display_sequence",
+		"effective_status",
+		"engagement_audience",
+		"failed_delivery_checks",
+		"id",
+		"is_autobid",
+		"issues_info",
+		"last_updated_by_app_id",
+		"name",
+		"preview_shareable_link",
+		"priority",
+		"recommendations",
+		"source_ad",
+		"source_ad_id",
+		"status",
+		"targeting",
+		"tracking_and_conversion_with_defaults",
+		"tracking_specs",
+		"updated_time",
+	}
+)

@@ -6,7 +6,7 @@ import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 )
 
-type AdCampaignIssueInfo struct {
+type Entity struct {
 	Context *sdk.APIContext
 
 	ErrorCode    int64 `json:"error_code"`
@@ -17,7 +17,7 @@ type AdCampaignIssueInfo struct {
 }
 
 func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdCampaignIssueInfo{}
+	ent := &Entity{}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}

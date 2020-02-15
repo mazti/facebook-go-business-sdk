@@ -34,5 +34,4 @@ func main() {
 		nodeList, err = nodeList.Next(0)
 		context.Log("next err:", err)
 	}
-
 }

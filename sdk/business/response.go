@@ -1,4 +1,4 @@
-package campaign
+package business
 
 import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"
