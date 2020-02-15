@@ -20,7 +20,7 @@ import (
 	"github.com/mazti/facebook-go-business-sdk/sdk/campaign"
 )
 
-type AdAccount struct {
+type Entity struct {
 	Context *sdk.APIContext
 
 	AccountID                         string                            `json:"account_id"`
@@ -86,14 +86,14 @@ type AdAccount struct {
 	UserTosAccepted                   map[string]int64                  `json:"user_tos_accepted"`
 }
 
-func NewAdAccount(id string, context *sdk.APIContext) *AdAccount {
-	return &AdAccount{
+func NewAdAccount(id string, context *sdk.APIContext) *Entity {
+	return &Entity{
 		Context: context,
 		ID:      id,
 	}
 }
 
-func FetchByID(id string, context *sdk.APIContext) (*AdAccount, error) {
+func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
 	req := sdk.NewAPIRequest(
 		context,
 		prefixID(id),
@@ -107,13 +107,13 @@ func FetchByID(id string, context *sdk.APIContext) (*AdAccount, error) {
 		return nil, err
 	}
 
-	account := ent.(*AdAccount)
+	account := ent.(*Entity)
 	account.ID = strings.Replace(account.ID, "act_", "", 1)
 
 	return account, nil
 }
 
-func (ent *AdAccount) Fetch() (*AdAccount, error) {
+func (ent *Entity) Fetch() (*Entity, error) {
 	obj, err := FetchByID(ent.getPrefixID(), ent.Context)
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func (ent *AdAccount) Fetch() (*AdAccount, error) {
 	return ent, nil
 }
 
-func (ent *AdAccount) GetCampaigns() (*sdk.APINodeList, error) {
+func (ent *Entity) GetCampaigns() (*sdk.APINodeList, error) {
 	req := campaign.CreateAPIRequestGet(ent.getPrefixID(), ent.Context)
 	resp, err := req.Execute()
 	if err != nil {
@@ -131,7 +131,7 @@ func (ent *AdAccount) GetCampaigns() (*sdk.APINodeList, error) {
 	return resp.(*sdk.APINodeList), nil
 }
 
-func (ent *AdAccount) GetInsights() (*adsinsights.Entity, error) {
+func (ent *Entity) GetInsights() (*adsinsights.Entity, error) {
 	req := adsinsights.CreateAPIRequestGet(ent.getPrefixID(), ent.Context)
 	resp, err := req.Execute()
 	if err != nil {
@@ -140,7 +140,7 @@ func (ent *AdAccount) GetInsights() (*adsinsights.Entity, error) {
 	return resp.(*adsinsights.Entity), nil
 }
 
-func ParseResponse(rawResp sdk.APIResponse) (resp []AdAccount, err error) {
+func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 	context := rawResp.GetContext()
 	nodeList, ok := rawResp.(*sdk.APINodeList)
 	if !ok {
@@ -161,13 +161,13 @@ func ParseResponse(rawResp sdk.APIResponse) (resp []AdAccount, err error) {
 //
 // For internal usage
 //
-func (ent *AdAccount) copy(other *AdAccount) {
+func (ent *Entity) copy(other *Entity) {
 	ent.ID = other.ID
 	ent.AccountStatus = other.AccountStatus
 	ent.AccountID = other.AccountID
 }
 
-func (ent *AdAccount) getPrefixID() string {
+func (ent *Entity) getPrefixID() string {
 	return prefixID(ent.ID)
 }
 
@@ -176,7 +176,7 @@ func prefixID(id string) string {
 }
 
 func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdAccount{}
+	ent := &Entity{}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}

@@ -19,5 +19,4 @@ func main() {
 
 	context.Log(err)
 	context.Log(account)
-
 }
