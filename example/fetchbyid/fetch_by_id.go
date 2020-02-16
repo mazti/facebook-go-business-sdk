@@ -5,6 +5,7 @@ import (
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adaccount"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adsinsights"
+	"time"
 )
 
 func main() {
@@ -21,9 +22,14 @@ func main() {
 	context.Log(err)
 	context.Log(account)
 
-	nodeList, err := account.GetInsights()
-	context.Log("get insights err:", err)
-	context.Log(err)
+	getInsightsRequest := account.GetInsights()
+
+	since, _ := time.Parse(sdk.TimeFormat, "2020-02-13")
+	until, _ := time.Parse(sdk.TimeFormat, "2020-02-13")
+
+	nodeList, err := getInsightsRequest.
+		SetTimeRange(since, until).
+		Execute()
 
 	for nodeList != nil {
 		insights, err := adsinsights.ParseResponse(nodeList)

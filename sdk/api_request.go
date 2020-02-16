@@ -54,6 +54,7 @@ func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options
 		endpoint:  endpoint,
 		method:    method,
 		executor:  NewDefaultRequestExecutor(),
+		params:    make(map[string]interface{}),
 		unmarshal: ParserResponse,
 	}
 
@@ -98,6 +99,10 @@ func (req *APIRequest) ExecuteWithParams(extraParams map[string]interface{}) (AP
 
 func (req *APIRequest) SetOverrideURL(url string) {
 	req.overrideURL = url
+}
+
+func (req *APIRequest) SetParam(key string, value interface{}) {
+	req.params[key] = value
 }
 
 func (req *APIRequest) executeInternal(extraParams map[string]interface{}) (*ResponseWrapper, error) {

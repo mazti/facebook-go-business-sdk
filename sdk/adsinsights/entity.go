@@ -11,6 +11,7 @@ const (
 	endpoint = "/insights"
 )
 
+// Entity AdsInsight https://developers.facebook.com/docs/marketing-api/reference/ad-account/insights
 type Entity struct {
 	request *sdk.APIRequest
 
