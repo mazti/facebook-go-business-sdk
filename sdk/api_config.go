@@ -7,3 +7,7 @@ const (
 	DefaultUserAgent  = "fbbizsdk-go-v5.0"
 	DefaultEndpoint   = "/"
 )
+
+const (
+	TimeFormat = "2006-01-02"
+)

@@ -131,13 +131,11 @@ func (ent *Entity) GetCampaigns() (*sdk.APINodeList, error) {
 	return resp.(*sdk.APINodeList), nil
 }
 
-func (ent *Entity) GetInsights() (*sdk.APINodeList, error) {
-	req := adsinsights.CreateAPIRequestGet(ent.getPrefixID(), ent.GetRequest().Context)
-	resp, err := req.Execute()
-	if err != nil {
-		return nil, err
-	}
-	return resp.(*sdk.APINodeList), nil
+func (ent *Entity) GetInsights() *adsinsights.APIRequestGetInsights {
+	return adsinsights.CreateAPIRequestGetInsights(
+		ent.getPrefixID(),
+		ent.GetRequest().Context,
+	)
 }
 
 func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
