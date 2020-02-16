@@ -17,10 +17,9 @@ type Paging struct {
 }
 
 type APINodeList struct {
-	Context        *APIContext
+	request        *APIRequest
 	Paging         Paging          `json:"paging"`
 	Data           json.RawMessage `json:"data,omitempty"`
-	request        *APIRequest
 	autoPagination bool
 	appSecret      string
 }
@@ -92,10 +91,10 @@ func (ent APINodeList) getNextURL() string {
 //
 // Functions for APINode
 //
-func (ent *APINodeList) SetContext(context *APIContext) {
-	ent.Context = context
+func (ent *APINodeList) SetRequest(request *APIRequest) {
+	ent.request = request
 }
 
-func (ent *APINodeList) GetContext() *APIContext {
-	return ent.Context
+func (ent *APINodeList) GetRequest() *APIRequest {
+	return ent.request
 }

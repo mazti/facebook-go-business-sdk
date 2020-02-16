@@ -27,7 +27,7 @@ type Unmarshal func(json json.RawMessage) (APIResponse, error)
 
 // APIRequest ...
 type APIRequest struct {
-	context *APIContext
+	Context *APIContext
 
 	executor  IRequestExecutor
 	unmarshal Unmarshal
@@ -49,7 +49,7 @@ type APIRequest struct {
 
 func NewAPIRequest(context *APIContext, nodeID, endpoint, method string, options ...func(*APIRequest)) *APIRequest {
 	req := &APIRequest{
-		context:   context,
+		Context:   context,
 		nodeID:    nodeID,
 		endpoint:  endpoint,
 		method:    method,
@@ -101,10 +101,10 @@ func (req *APIRequest) SetOverrideURL(url string) {
 }
 
 func (req *APIRequest) executeInternal(extraParams map[string]interface{}) (*ResponseWrapper, error) {
-	ctx := req.context
+	ctx := req.Context
 	ctx.Log("========Start of API Call========")
 	defer ctx.Log("========End of API Call========")
-	resp, err := req.executor.Execute(req.method, req.getURL(), req.getAllParams(extraParams), req.context)
+	resp, err := req.executor.Execute(req.method, req.getURL(), req.getAllParams(extraParams), req.Context)
 	if err != nil {
 		return nil, err
 	}
@@ -117,12 +117,11 @@ func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
 	if req.unmarshal != nil {
 		resp, err := req.unmarshal(body)
 		if err == nil && resp != nil {
-			resp.SetContext(req.context)
+			resp.SetRequest(req)
 			return resp
 		}
 	}
 	return Load(
-		req.context,
 		req,
 		body,
 		header,
@@ -133,7 +132,7 @@ func (req *APIRequest) getURL() string {
 	if len(req.overrideURL) > 0 {
 		return req.overrideURL
 	}
-	ctx := req.context
+	ctx := req.Context
 	endpointBase := ctx.endpointBase
 	if req.useVideoEndpoint {
 		endpointBase = ctx.videoEndpointBase
@@ -143,7 +142,7 @@ func (req *APIRequest) getURL() string {
 
 func (req *APIRequest) getAllParams(extraParams map[string]interface{}) (allParams map[string]interface{}) {
 	allParams = map[string]interface{}{}
-	ctx := req.context
+	ctx := req.Context
 	if len(req.overrideURL) > 0 {
 		return allParams
 	}

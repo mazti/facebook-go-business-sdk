@@ -11,7 +11,7 @@ const (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
 
 	D1Click                             string `json:"1d_click"`
 	D1View                              string `json:"1d_view"`

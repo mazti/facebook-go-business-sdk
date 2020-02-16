@@ -1,6 +1,6 @@
 package sdk
 
 type APIResponse interface {
-	SetContext(*APIContext)
-	GetContext() *APIContext
+	SetRequest(*APIRequest)
+	GetRequest() *APIRequest
 }

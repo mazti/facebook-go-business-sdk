@@ -13,7 +13,7 @@ const (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
 
 	BudgetLimitNew          interface{} `json:"budget_limit_new"`
 	BudgetLimitOld          interface{} `json:"budget_limit_old"`
@@ -73,7 +73,7 @@ func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
 }
 
 func (ent *Entity) Fetch() (*Entity, error) {
-	obj, err := FetchByID(ent.getPrefixID(), ent.Context)
+	obj, err := FetchByID(ent.getPrefixID(), ent.GetRequest().Context)
 	if err != nil {
 		return nil, err
 	}

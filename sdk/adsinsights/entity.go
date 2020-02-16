@@ -1,7 +1,6 @@
 package adsinsights
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk"
@@ -13,7 +12,7 @@ const (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
 
 	AccountCurrency                           string                  `json:"account_currency"`
 	AccountId                                 string                  `json:"account_id"`
@@ -253,15 +252,24 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 		id,
 		endpoint,
 		http.MethodGet,
-		sdk.Parser(parserResponse),
 		sdk.ParamNames(params),
 	)
 }
 
-func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &Entity{}
-	if err := json.Unmarshal(data, ent); err != nil {
-		return ent, err
+func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
+	request := rawResp.GetRequest()
+	context := request.Context
+	nodeList, ok := rawResp.(*sdk.APINodeList)
+	if !ok {
+		return nil, sdk.UnsupportedResponse
 	}
-	return ent, nil
+	err = nodeList.Unmarshal(&resp)
+	if err != nil {
+		context.Log(err)
+		return
+	}
+	for i := 0; i < len(resp); i++ {
+		resp[i].SetRequest(request)
+	}
+	return
 }
