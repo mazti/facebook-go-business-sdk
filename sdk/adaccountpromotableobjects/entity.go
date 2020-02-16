@@ -11,7 +11,8 @@ const (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
+
 	// TODO: adding more field here
 }
 

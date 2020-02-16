@@ -12,7 +12,7 @@ const (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
 
 	ID   string `json:"id"`
 	Name string `json:"name"`

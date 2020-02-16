@@ -16,7 +16,7 @@ const (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
 
 	AccountId               string                       `json:"account_id"`
 	Adlabels                []adlabel.Entity             `json:"adlabels"`
@@ -53,7 +53,8 @@ type Entity struct {
 }
 
 func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
-	context := rawResp.GetContext()
+	request := rawResp.GetRequest()
+	context := request.Context
 	nodeList, ok := rawResp.(*sdk.APINodeList)
 	if !ok {
 		return nil, sdk.UnsupportedResponse
@@ -64,7 +65,7 @@ func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 		return
 	}
 	for i := 0; i < len(resp); i++ {
-		resp[i].SetContext(context)
+		resp[i].SetRequest(request)
 	}
 	return
 }

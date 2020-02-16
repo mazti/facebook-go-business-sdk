@@ -32,13 +32,5 @@ func main() {
 		context.Log(err)
 		return
 	}
-
 	context.Log(adaccounts)
-	context.Log("-----")
-	insights, err := adaccounts[0].GetInsights()
-	if err != nil {
-		context.Log(err)
-		return
-	}
-	context.Log(insights)
 }

@@ -21,7 +21,7 @@ import (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
 
 	AccountID                         string                            `json:"account_id"`
 	AccountStatus                     int64                             `json:"account_status"`
@@ -88,7 +88,7 @@ type Entity struct {
 
 func NewAdAccount(id string, context *sdk.APIContext) *Entity {
 	return &Entity{
-		Context: context,
+		request: &sdk.APIRequest{Context: context},
 		ID:      id,
 	}
 }
@@ -114,7 +114,7 @@ func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
 }
 
 func (ent *Entity) Fetch() (*Entity, error) {
-	obj, err := FetchByID(ent.getPrefixID(), ent.Context)
+	obj, err := FetchByID(ent.getPrefixID(), ent.GetRequest().Context)
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +123,7 @@ func (ent *Entity) Fetch() (*Entity, error) {
 }
 
 func (ent *Entity) GetCampaigns() (*sdk.APINodeList, error) {
-	req := campaign.CreateAPIRequestGet(ent.getPrefixID(), ent.Context)
+	req := campaign.CreateAPIRequestGet(ent.getPrefixID(), ent.GetRequest().Context)
 	resp, err := req.Execute()
 	if err != nil {
 		return nil, err
@@ -131,17 +131,18 @@ func (ent *Entity) GetCampaigns() (*sdk.APINodeList, error) {
 	return resp.(*sdk.APINodeList), nil
 }
 
-func (ent *Entity) GetInsights() (*adsinsights.Entity, error) {
-	req := adsinsights.CreateAPIRequestGet(ent.getPrefixID(), ent.Context)
+func (ent *Entity) GetInsights() (*sdk.APINodeList, error) {
+	req := adsinsights.CreateAPIRequestGet(ent.getPrefixID(), ent.GetRequest().Context)
 	resp, err := req.Execute()
 	if err != nil {
 		return nil, err
 	}
-	return resp.(*adsinsights.Entity), nil
+	return resp.(*sdk.APINodeList), nil
 }
 
 func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
-	context := rawResp.GetContext()
+	request := rawResp.GetRequest()
+	context := rawResp.GetRequest().Context
 	nodeList, ok := rawResp.(*sdk.APINodeList)
 	if !ok {
 		return nil, sdk.UnsupportedResponse
@@ -153,7 +154,7 @@ func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 	}
 	for i := 0; i < len(resp); i++ {
 		resp[i].ID = strings.Replace(resp[i].ID, "act_", "", 1)
-		resp[i].SetContext(context)
+		resp[i].SetRequest(request)
 	}
 	return
 }

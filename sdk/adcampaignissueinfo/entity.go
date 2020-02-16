@@ -7,7 +7,7 @@ import (
 )
 
 type Entity struct {
-	Context *sdk.APIContext
+	request *sdk.APIRequest
 
 	ErrorCode    int64 `json:"error_code"`
 	ErrorMessage int64 `json:"error_message"`

@@ -12,12 +12,12 @@ const (
 	endpoint = "/"
 )
 
-type AdSet struct {
-	Context *sdk.APIContext
+type Entity struct {
+	request *sdk.APIRequest
 
 	AccountId                    string           `json:"account_id"`
 	Adlabels                     []interface{}    `json:"adlabels"`
-	AdsetSchedule                []interface{}    `json:"adset_schedule"`
+	EntitySchedule               []interface{}    `json:"Entity_schedule"`
 	AssetFeedId                  string           `json:"asset_feed_id"`
 	AttributionSpec              []interface{}    `json:"attribution_spec"`
 	BidAdjustments               interface{}      `json:"bid_adjustments"`
@@ -57,8 +57,8 @@ type AdSet struct {
 	RecurringBudgetSemantics     bool             `json:"recurring_budget_semantics"`
 	ReviewFeedback               string           `json:"review_feedback"`
 	RfPredictionId               string           `json:"rf_prediction_id"`
-	SourceAdset                  interface{}      `json:"source_adset"`
-	SourceAdsetId                string           `json:"source_adset_id"`
+	SourceEntity                 interface{}      `json:"source_Entity"`
+	SourceEntityId               string           `json:"source_Entity_id"`
 	StartTime                    string           `json:"start_time"`
 	Status                       interface{}      `json:"status"`
 	Targeting                    interface{}      `json:"targeting"`
@@ -81,7 +81,7 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 	)
 }
 
-func FetchByID(id string, context *sdk.APIContext) (*AdSet, error) {
+func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
 	req := sdk.NewAPIRequest(
 		context,
 		id,
@@ -95,14 +95,14 @@ func FetchByID(id string, context *sdk.APIContext) (*AdSet, error) {
 		return nil, err
 	}
 
-	account := ent.(*AdSet)
+	account := ent.(*Entity)
 	account.ID = strings.Replace(account.ID, "act_", "", 1)
 
 	return account, nil
 }
 
-func (ent *AdSet) Fetch() (*AdSet, error) {
-	obj, err := FetchByID(ent.getPrefixID(), ent.Context)
+func (ent *Entity) Fetch() (*Entity, error) {
+	obj, err := FetchByID(ent.getPrefixID(), ent.GetRequest().Context)
 	if err != nil {
 		return nil, err
 	}
@@ -114,17 +114,17 @@ func (ent *AdSet) Fetch() (*AdSet, error) {
 // For internal usage
 //
 func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &AdSet{}
+	ent := &Entity{}
 	if err := json.Unmarshal(data, ent); err != nil {
 		return ent, err
 	}
 	return ent, nil
 }
 
-func (ent *AdSet) getPrefixID() string {
+func (ent *Entity) getPrefixID() string {
 	return ent.ID
 }
 
-func (ent *AdSet) copy(other *AdSet) {
+func (ent *Entity) copy(other *Entity) {
 	// TODO: copy fields
 }
