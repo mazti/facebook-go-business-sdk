@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"github.com/mazti/facebook-go-business-sdk/sdk/adsinsights"
 	"net/http"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk"
@@ -80,6 +81,17 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 		sdk.ParamNames(params),
 		sdk.ReturnFields(fields),
 	)
+}
+
+func (ent *Entity) GetInsights() *adsinsights.APIRequestGetInsights {
+	return adsinsights.CreateAPIRequestGetInsights(
+		ent.getPrefixID(),
+		ent.GetRequest().Context,
+	)
+}
+
+func (ent *Entity) getPrefixID() string {
+	return ent.ID
 }
 
 func (ent *Entity) GetAds() (*sdk.APINodeList, error) {
