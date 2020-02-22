@@ -2,20 +2,23 @@ package business
 
 var (
 	fields = []string{
-		"business",
-		"canceled_time",
-		"cooldown_start_time",
+		"block_offline_analytics",
 		"created_by",
 		"created_time",
-		"description",
-		"end_time",
+		"extended_updated_time",
 		"id",
+		"is_hidden",
+		"is_instagram_enabled_in_fb_analytics",
+		"link",
 		"name",
-		"observation_end_time",
-		"results_first_available_date",
-		"start_time",
-		"type",
+		"primary_page",
+		"profile_picture_uri",
+		"timezone_id",
+		"two_factor_type",
 		"updated_by",
 		"updated_time",
+		"verification_status",
+		"vertical",
+		"vertical_id",
 	}
 )

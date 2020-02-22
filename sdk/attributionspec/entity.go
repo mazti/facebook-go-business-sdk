@@ -2,8 +2,9 @@ package attributionspec
 
 import (
 	"encoding/json"
-	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"net/http"
+
+	"github.com/mazti/facebook-go-business-sdk/sdk"
 )
 
 const (

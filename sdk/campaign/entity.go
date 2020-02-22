@@ -1,8 +1,9 @@
 package campaign
 
 import (
-	"github.com/mazti/facebook-go-business-sdk/sdk/adsinsights"
 	"net/http"
+
+	"github.com/mazti/facebook-go-business-sdk/sdk/adsinsights"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adcampaignissueinfo"

@@ -1,4 +1,4 @@
-package adpromotedobject
+package page
 
 import (
 	"encoding/json"
@@ -13,7 +13,6 @@ const (
 
 type Entity struct {
 	request *sdk.APIRequest
-
 	// TODO: adding more field here
 }
 
@@ -24,6 +23,7 @@ func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
 		endpoint,
 		http.MethodGet,
 		sdk.Parser(parserResponse),
+		sdk.ParamNames(params),
 		sdk.ReturnFields(fields),
 	)
 }
