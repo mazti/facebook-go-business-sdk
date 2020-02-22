@@ -20,6 +20,11 @@ import (
 	"github.com/mazti/facebook-go-business-sdk/sdk/campaign"
 )
 
+const (
+	nodeID   = "me"
+	endpoint = "adaccounts"
+)
+
 type Entity struct {
 	request *sdk.APIRequest
 
@@ -111,6 +116,23 @@ func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
 	account.ID = strings.Replace(account.ID, "act_", "", 1)
 
 	return account, nil
+}
+
+func GetAdAccounts(context *sdk.APIContext) (*sdk.APINodeList, error) {
+	req := sdk.NewAPIRequest(
+		context,
+		nodeID,
+		endpoint,
+		http.MethodGet,
+		sdk.Parser(sdk.ParserResponse),
+		sdk.ReturnFields(fields),
+	)
+
+	resp, err := req.Execute()
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*sdk.APINodeList), nil
 }
 
 func (ent *Entity) Fetch() (*Entity, error) {
