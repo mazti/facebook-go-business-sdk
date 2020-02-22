@@ -2,10 +2,11 @@ package sdk
 
 import (
 	"encoding/json"
-	"github.com/google/go-querystring/query"
 	"net/url"
 	"path"
 	"reflect"
+
+	"github.com/google/go-querystring/query"
 )
 
 func createRequestURL(rawURL string, rawParams interface{}) (string, error) {

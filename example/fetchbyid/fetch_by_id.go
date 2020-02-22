@@ -1,11 +1,12 @@
 package main
 
 import (
+	"time"
+
 	. "github.com/mazti/facebook-go-business-sdk/example"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adaccount"
 	"github.com/mazti/facebook-go-business-sdk/sdk/adsinsights"
-	"time"
 )
 
 func main() {
