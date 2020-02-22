@@ -80,10 +80,10 @@ type Entity struct {
 	RfSpec                            reachfrequencyspec.Entity         `json:"rf_spec"`
 	ShowCheckoutExperience            bool                              `json:"show_checkout_experience"`
 	SpendCap                          string                            `json:"spend_cap"`
-	TaxId                             string                            `json:"tax_id"`
-	TaxIdStatus                       int64                             `json:"tax_id_status"`
-	TaxIdType                         string                            `json:"tax_id_type"`
-	TimezoneId                        int64                             `json:"timezone_id"`
+	TaxID                             string                            `json:"tax_id"`
+	TaxIDStatus                       int64                             `json:"tax_id_status"`
+	TaxIDType                         string                            `json:"tax_id_type"`
+	TimezoneID                        int64                             `json:"timezone_id"`
 	TimezoneName                      string                            `json:"timezone_name"`
 	TimezoneOffsetHoursUtc            float64                           `json:"timezone_offset_hours_utc"`
 	TosAccepted                       map[string]int64                  `json:"tos_accepted"`
