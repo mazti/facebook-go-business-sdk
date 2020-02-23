@@ -93,8 +93,8 @@ func (req *APIRequest) ExecuteWithParams(extraParams map[string]interface{}) (AP
 	if err != nil {
 		return nil, err
 	}
-	req.lastResponse = req.parseResponse(rw.Body, rw.Header)
-	return req.lastResponse, nil
+	req.lastResponse, err = req.parseResponse(rw.Body, rw.Header)
+	return req.lastResponse, err
 }
 
 func (req *APIRequest) SetOverrideURL(url string) {
@@ -117,20 +117,23 @@ func (req *APIRequest) executeInternal(extraParams map[string]interface{}) (*Res
 	return resp, nil
 }
 
-func (req *APIRequest) parseResponse(body []byte, header []byte) APIResponse {
-	// TODO: parse error message {"error":{"message":"Malformed access token <token>","type":"OAuthException","code":190,"fbtrace_id":"AI3xqjaZLDAl4hv6Ng7KfZ8"}}
+func (req *APIRequest) parseResponse(body []byte, header []byte) (APIResponse, error) {
+	// Check error inside response first
+	errResp := &FbErrorResponse{}
+	if err := json.Unmarshal(body, errResp); err == nil {
+		if len(errResp.Error.Message) > 0 {
+			return errResp, ErrorInResponse
+		}
+	}
+	// If there is custom unmarshal then use it second
 	if req.unmarshal != nil {
 		resp, err := req.unmarshal(body)
 		if err == nil && resp != nil {
 			resp.SetRequest(req)
-			return resp
+			return resp, nil
 		}
 	}
-	return Load(
-		req,
-		body,
-		header,
-	)
+	return Load(req, body, header), nil
 }
 
 func (req *APIRequest) getURL() string {

@@ -3,6 +3,7 @@ package adaccount
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/mazti/facebook-go-business-sdk/sdk/adaccountuser"
 	"net/http"
 	"strings"
 
@@ -136,11 +137,14 @@ func GetAdAccounts(context *sdk.APIContext) (*sdk.APINodeList, error) {
 }
 
 func (ent *Entity) Fetch() (*Entity, error) {
-	obj, err := FetchByID(ent.getPrefixID(), ent.GetRequest().Context)
+	obj, err := FetchByID(ent.ID, ent.GetRequest().Context)
 	if err != nil {
 		return nil, err
 	}
-	ent.copy(obj)
+	err = ent.copy(obj)
+	if err != nil {
+		return nil, err
+	}
 	return ent, nil
 }
 
@@ -151,6 +155,14 @@ func (ent *Entity) GetCampaigns() (*sdk.APINodeList, error) {
 		return nil, err
 	}
 	return resp.(*sdk.APINodeList), nil
+}
+
+func (ent *Entity) GetUsers() (*sdk.APINodeList, error) {
+	resp, err := adaccountuser.GetAdAccountUsers(ent.getPrefixID(), ent.GetRequest().Context)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (ent *Entity) GetInsights() *adsinsights.APIRequestGetInsights {
@@ -182,10 +194,12 @@ func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 //
 // For internal usage
 //
-func (ent *Entity) copy(other *Entity) {
-	ent.ID = other.ID
-	ent.AccountStatus = other.AccountStatus
-	ent.AccountID = other.AccountID
+func (ent *Entity) copy(other *Entity) error {
+	bytes, err := json.Marshal(other)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(bytes, ent)
 }
 
 func (ent *Entity) getPrefixID() string {

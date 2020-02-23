@@ -27,7 +27,7 @@ func main() {
 		context.Log("businesses:", businesses)
 
 		for _, biz := range businesses {
-			nodeListUsers, err := businessuser.GetBusinessUsers(biz.ID, context)
+			nodeListUsers, err := biz.GetUsers()
 			if err != nil {
 				context.Log(err)
 				continue
