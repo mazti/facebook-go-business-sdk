@@ -14,11 +14,18 @@ func main() {
 		sdk.Debug(true),
 	)
 
-	adaccounts, err := adaccount.GetAdAccounts(context)
+	nodeList, err := adaccount.GetAdAccounts(context)
 
 	if err != nil {
 		context.Log(err)
 		return
 	}
-	context.Log(adaccounts)
+	for nodeList != nil {
+		adaccounts, err := adaccount.ParseResponse(nodeList)
+		context.Log(err)
+		context.Log("adaccounts:", adaccounts)
+
+		nodeList, err = nodeList.Next(0)
+		context.Log("next err:", err)
+	}
 }
