@@ -10,6 +10,7 @@ const (
 	endpoint = "/business_users"
 )
 
+// https://developers.facebook.com/docs/marketing-api/business-manager/get-started#users
 type Entity struct {
 	request *sdk.APIRequest
 
