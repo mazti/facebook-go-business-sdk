@@ -1,9 +1,11 @@
 package business
 
 import (
-	"github.com/mazti/facebook-go-business-sdk/sdk"
-	"github.com/mazti/facebook-go-business-sdk/sdk/page"
 	"net/http"
+
+	"github.com/mazti/facebook-go-business-sdk/sdk"
+	"github.com/mazti/facebook-go-business-sdk/sdk/businessuser"
+	"github.com/mazti/facebook-go-business-sdk/sdk/page"
 )
 
 const (
@@ -33,6 +35,14 @@ type Entity struct {
 	VerificationStatus              string      `json:"verification_status"`
 	Vertical                        string      `json:"vertical"`
 	VerticalID                      int64       `json:"vertical_id"`
+}
+
+func (ent *Entity) GetUsers() (*sdk.APINodeList, error) {
+	resp, err := businessuser.GetBusinessUsers(ent.ID, ent.GetRequest().Context)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func GetBusinesses(context *sdk.APIContext) (*sdk.APINodeList, error) {

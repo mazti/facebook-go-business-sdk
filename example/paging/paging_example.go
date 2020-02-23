@@ -20,6 +20,9 @@ func main() {
 
 	account, err := account.Fetch()
 	context.Log("fetch err:", err)
+	if err != nil {
+		return
+	}
 	context.Log(account.AccountID, account.AccountStatus)
 
 	nodeList, err := account.GetCampaigns()

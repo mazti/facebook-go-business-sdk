@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	endpoint = "/campaigns"
+	endpoint = "campaigns"
 )
 
 type Entity struct {

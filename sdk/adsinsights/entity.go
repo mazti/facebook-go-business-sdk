@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	endpoint = "/insights"
+	endpoint = "insights"
 )
 
 // Entity AdsInsight https://developers.facebook.com/docs/marketing-api/reference/ad-account/insights
