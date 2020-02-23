@@ -1,22 +1,21 @@
 package business
 
 import (
-	"encoding/json"
-	"net/http"
-
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/page"
+	"net/http"
 )
 
 const (
-	endpoint = "/"
+	nodeID   = "me"
+	endpoint = "businesses"
 )
 
 type Entity struct {
 	request *sdk.APIRequest
 
 	BlockOfflineAnalytics           bool        `json:"block_offline_analytics"`
-	CreatedBy                       string      `json:"created_by"`
+	CreatedBy                       interface{} `json:"created_by"`
 	CreatedTime                     string      `json:"created_time"`
 	ExtendedUpdatedTime             string      `json:"extended_updated_time"`
 	ID                              string      `json:"id"`
@@ -29,28 +28,44 @@ type Entity struct {
 	ProfilePictureUri               string      `json:"profile_picture_uri"`
 	TimezoneID                      int64       `json:"timezone_id"`
 	TwoFactorType                   string      `json:"two_factor_type"`
-	UpdatedBy                       string      `json:"updated_by"`
+	UpdatedBy                       interface{} `json:"updated_by"`
 	UpdatedTime                     string      `json:"updated_time"`
 	VerificationStatus              string      `json:"verification_status"`
 	Vertical                        string      `json:"vertical"`
 	VerticalID                      int64       `json:"vertical_id"`
 }
 
-func CreateAPIRequestGet(id string, context *sdk.APIContext) *sdk.APIRequest {
-	return sdk.NewAPIRequest(
+func GetBusinesses(context *sdk.APIContext) (*sdk.APINodeList, error) {
+	req := sdk.NewAPIRequest(
 		context,
-		id,
+		nodeID,
 		endpoint,
 		http.MethodGet,
-		sdk.Parser(parserResponse),
+		sdk.Parser(sdk.ParserResponse),
 		sdk.ReturnFields(fields),
 	)
+
+	resp, err := req.Execute()
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*sdk.APINodeList), nil
 }
 
-func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
-	ent := &Entity{}
-	if err := json.Unmarshal(data, ent); err != nil {
-		return ent, err
+func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
+	request := rawResp.GetRequest()
+	context := rawResp.GetRequest().Context
+	nodeList, ok := rawResp.(*sdk.APINodeList)
+	if !ok {
+		return nil, sdk.UnsupportedResponse
 	}
-	return ent, nil
+	err = nodeList.Unmarshal(&resp)
+	if err != nil {
+		context.Log(err)
+		return
+	}
+	for i := 0; i < len(resp); i++ {
+		resp[i].SetRequest(request)
+	}
+	return
 }
