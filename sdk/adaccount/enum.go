@@ -1,6 +1,6 @@
 package adaccount
 
-type AccountStatus int64
+type AccountStatus uint32
 
 const (
 	Active                 AccountStatus = 1
@@ -15,7 +15,7 @@ const (
 	AnyClosedAccountStatus AccountStatus = 202
 )
 
-type DisableReason int64
+type DisableReason uint32
 
 const (
 	None                  DisableReason = 0
