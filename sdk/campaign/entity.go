@@ -17,6 +17,7 @@ const (
 	endpoint = "campaigns"
 )
 
+// https://developers.facebook.com/docs/marketing-api/reference/ad-account/campaigns/
 type Entity struct {
 	request *sdk.APIRequest
 
