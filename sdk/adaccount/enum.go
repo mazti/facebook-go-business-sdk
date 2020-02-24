@@ -14,3 +14,18 @@ const (
 	AnyActive              AccountStatus = 201
 	AnyClosedAccountStatus AccountStatus = 202
 )
+
+type DisableReason int64
+
+const (
+	None                  DisableReason = 0
+	AdsIntegrityPolicy    DisableReason = 1
+	AdsIpReview           DisableReason = 2
+	RiskPayment           DisableReason = 3
+	GrayAccountShutDown   DisableReason = 4
+	AdsAfcReview          DisableReason = 5
+	BusinessIntegrityRar  DisableReason = 6
+	PermanentClose        DisableReason = 7
+	UnusedResellerAccount DisableReason = 8
+	UnusedAccount         DisableReason = 9
+)
