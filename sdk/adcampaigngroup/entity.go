@@ -15,29 +15,29 @@ const (
 type Entity struct {
 	request *sdk.APIRequest
 
-	BudgetLimitNew          interface{} `json:"budget_limit_new"`
-	BudgetLimitOld          interface{} `json:"budget_limit_old"`
-	BuyingTypeNew           string      `json:"buying_type_new"`
-	BuyingTypeOld           string      `json:"buying_type_old"`
-	EventTime               string      `json:"event_time"`
-	EventType               string      `json:"event_type"`
-	ID                      string      `json:"id"`
-	IsAutobidNew            bool        `json:"is_autobid_new"`
-	IsAutobidOld            bool        `json:"is_autobid_old"`
-	IsAveragePricePacingNew bool        `json:"is_average_price_pacing_new"`
-	IsAveragePricePacingOld bool        `json:"is_average_price_pacing_old"`
-	NameNew                 string      `json:"name_new"`
-	NameOld                 string      `json:"name_old"`
-	ObjectiveNew            interface{} `json:"objective_new"`
-	ObjectiveOld            interface{} `json:"objective_old"`
-	PacingType              int64       `json:"pacing_type"`
-	RunStatusNew            string      `json:"run_status_new"`
-	RunStatusOld            string      `json:"run_status_old"`
-	SpendCapNew             int64       `json:"spend_cap_new"`
-	SpendCapOld             int64       `json:"spend_cap_old"`
-	TimeCreated             string      `json:"time_created"`
-	TimeUpdatedNew          string      `json:"time_updated_new"`
-	TimeUpdatedOld          string      `json:"time_updated_old"`
+	BudgetLimitNew          json.RawMessage `json:"budget_limit_new"`
+	BudgetLimitOld          json.RawMessage `json:"budget_limit_old"`
+	BuyingTypeNew           string          `json:"buying_type_new"`
+	BuyingTypeOld           string          `json:"buying_type_old"`
+	EventTime               string          `json:"event_time"`
+	EventType               string          `json:"event_type"`
+	ID                      string          `json:"id"`
+	IsAutobidNew            bool            `json:"is_autobid_new"`
+	IsAutobidOld            bool            `json:"is_autobid_old"`
+	IsAveragePricePacingNew bool            `json:"is_average_price_pacing_new"`
+	IsAveragePricePacingOld bool            `json:"is_average_price_pacing_old"`
+	NameNew                 string          `json:"name_new"`
+	NameOld                 string          `json:"name_old"`
+	ObjectiveNew            json.RawMessage `json:"objective_new"`
+	ObjectiveOld            json.RawMessage `json:"objective_old"`
+	PacingType              int64           `json:"pacing_type"`
+	RunStatusNew            string          `json:"run_status_new"`
+	RunStatusOld            string          `json:"run_status_old"`
+	SpendCapNew             int64           `json:"spend_cap_new"`
+	SpendCapOld             int64           `json:"spend_cap_old"`
+	TimeCreated             string          `json:"time_created"`
+	TimeUpdatedNew          string          `json:"time_updated_new"`
+	TimeUpdatedOld          string          `json:"time_updated_old"`
 	// TODO: check & correct field for interface
 }
 

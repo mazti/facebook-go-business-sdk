@@ -1,6 +1,7 @@
 package adsinsights
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk"
@@ -49,9 +50,9 @@ type Entity struct {
 	AuctionBid                                string                  `json:"auction_bid"`
 	AuctionCompetitiveness                    string                  `json:"auction_competitiveness"`
 	AuctionMaxCompetitorBid                   string                  `json:"auction_max_competitor_bid"`
-	BodyAsset                                 interface{}             `json:"body_asset"`
+	BodyAsset                                 json.RawMessage         `json:"body_asset"`
 	BuyingType                                string                  `json:"buying_type"`
-	CallToActionAsset                         interface{}             `json:"call_to_action_asset"`
+	CallToActionAsset                         json.RawMessage         `json:"call_to_action_asset"`
 	CallToActionClicks                        string                  `json:"call_to_action_clicks"`
 	CampaignDelivery                          string                  `json:"campaign_delivery"`
 	CampaignEnd                               string                  `json:"campaign_end"`
@@ -126,7 +127,7 @@ type Entity struct {
 	Deduping3rdSourceRatio                    string                  `json:"deduping_3rd_source_ratio"`
 	DedupingRatio                             string                  `json:"deduping_ratio"`
 	DeeplinkClicks                            string                  `json:"deeplink_clicks"`
-	DescriptionAsset                          interface{}             `json:"description_asset"`
+	DescriptionAsset                          json.RawMessage         `json:"description_asset"`
 	DevicePlatform                            string                  `json:"device_platform"`
 	Dma                                       string                  `json:"dma"`
 	DonateActions                             []adsactionstats.Entity `json:"donate_actions"`
@@ -153,7 +154,7 @@ type Entity struct {
 	GenderTargeting                           string                  `json:"gender_targeting"`
 	HourlyStatsAggregatedByAdvertiserTimeZone string                  `json:"hourly_stats_aggregated_by_advertiser_time_zone"`
 	HourlyStatsAggregatedByAudienceTimeZone   string                  `json:"hourly_stats_aggregated_by_audience_time_zone"`
-	ImageAsset                                interface{}             `json:"image_asset"`
+	ImageAsset                                json.RawMessage         `json:"image_asset"`
 	ImpressionDevice                          string                  `json:"impression_device"`
 	Impressions                               string                  `json:"impressions"`
 	ImpressionsAutoRefresh                    string                  `json:"impressions_auto_refresh"`
@@ -166,9 +167,9 @@ type Entity struct {
 	InstantExperienceOutboundClicks           string                  `json:"instant_experience_outbound_clicks"`
 	InteractiveComponentTap                   []adsactionstats.Entity `json:"interactive_component_tap"`
 	Labels                                    string                  `json:"labels"`
-	LinkUrlAsset                              interface{}             `json:"link_url_asset"`
+	LinkUrlAsset                              json.RawMessage         `json:"link_url_asset"`
 	Location                                  string                  `json:"location"`
-	MediaAsset                                interface{}             `json:"media_asset"`
+	MediaAsset                                json.RawMessage         `json:"media_asset"`
 	MobileAppPurchaseRoas                     []adsactionstats.Entity `json:"mobile_app_purchase_roas"`
 	NewsfeedAvgPosition                       string                  `json:"newsfeed_avg_position"`
 	NewsfeedClicks                            string                  `json:"newsfeed_clicks"`
@@ -192,7 +193,7 @@ type Entity struct {
 	Reach                                     string                  `json:"reach"`
 	RecurringSubscriptionPaymentActions       []adsactionstats.Entity `json:"recurring_subscription_payment_actions"`
 	Region                                    string                  `json:"region"`
-	RuleAsset                                 interface{}             `json:"rule_asset"`
+	RuleAsset                                 json.RawMessage         `json:"rule_asset"`
 	ScheduleActions                           []adsactionstats.Entity `json:"schedule_actions"`
 	ScheduleValue                             []adsactionstats.Entity `json:"schedule_value"`
 	SocialSpend                               string                  `json:"social_spend"`
@@ -204,7 +205,7 @@ type Entity struct {
 	SubscribeActions                          []adsactionstats.Entity `json:"subscribe_actions"`
 	SubscribeValue                            []adsactionstats.Entity `json:"subscribe_value"`
 	ThumbStops                                string                  `json:"thumb_stops"`
-	TitleAsset                                interface{}             `json:"title_asset"`
+	TitleAsset                                json.RawMessage         `json:"title_asset"`
 	TodaySpend                                string                  `json:"today_spend"`
 	TotalActionValue                          string                  `json:"total_action_value"`
 	TotalActions                              string                  `json:"total_actions"`
@@ -224,7 +225,7 @@ type Entity struct {
 	UpdatedTime                               string                  `json:"updated_time"`
 	Video15SecWatchedActions                  []adsactionstats.Entity `json:"video_15_sec_watched_actions"`
 	Video30SecWatchedActions                  []adsactionstats.Entity `json:"video_30_sec_watched_actions"`
-	VideoAsset                                interface{}             `json:"video_asset"`
+	VideoAsset                                json.RawMessage         `json:"video_asset"`
 	VideoAvgTimeWatchedActions                []adsactionstats.Entity `json:"video_avg_time_watched_actions"`
 	VideoCompleteWatchedActions               []adsactionstats.Entity `json:"video_complete_watched_actions"`
 	VideoCompletedViewOr15sPassedActions      []adsactionstats.Entity `json:"video_completed_view_or_15s_passed_actions"`
@@ -235,10 +236,10 @@ type Entity struct {
 	VideoP75WatchedActions                    []adsactionstats.Entity `json:"video_p75_watched_actions"`
 	VideoP95WatchedActions                    []adsactionstats.Entity `json:"video_p95_watched_actions"`
 	VideoPlayActions                          []adsactionstats.Entity `json:"video_play_actions"`
-	VideoPlayCurveActions                     []interface{}           `json:"video_play_curve_actions"`
-	VideoPlayRetention0To15sActions           []interface{}           `json:"video_play_retention_0_to_15s_actions"`
-	VideoPlayRetention20To60sActions          []interface{}           `json:"video_play_retention_20_to_60s_actions"`
-	VideoPlayRetentionGraphActions            []interface{}           `json:"video_play_retention_graph_actions"`
+	VideoPlayCurveActions                     []json.RawMessage       `json:"video_play_curve_actions"`
+	VideoPlayRetention0To15sActions           []json.RawMessage       `json:"video_play_retention_0_to_15s_actions"`
+	VideoPlayRetention20To60sActions          []json.RawMessage       `json:"video_play_retention_20_to_60s_actions"`
+	VideoPlayRetentionGraphActions            []json.RawMessage       `json:"video_play_retention_graph_actions"`
 	VideoThruplayWatchedActions               []adsactionstats.Entity `json:"video_thruplay_watched_actions"`
 	VideoTimeWatchedActions                   []adsactionstats.Entity `json:"video_time_watched_actions"`
 	WebsiteClicks                             string                  `json:"website_clicks"`

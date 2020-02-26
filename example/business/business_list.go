@@ -4,6 +4,7 @@ import (
 	. "github.com/mazti/facebook-go-business-sdk/example"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/business"
+	"github.com/mazti/facebook-go-business-sdk/sdk/businessrolerequest"
 	"github.com/mazti/facebook-go-business-sdk/sdk/businessuser"
 )
 
@@ -24,7 +25,6 @@ func main() {
 	for nodeList != nil {
 		businesses, err := business.ParseResponse(nodeList)
 		context.Log(err)
-		context.Log("businesses:", businesses)
 
 		for _, biz := range businesses {
 			nodeListUsers, err := biz.GetUsers()
@@ -34,9 +34,25 @@ func main() {
 			}
 
 			bizUsers, err := businessuser.ParseResponse(nodeListUsers)
-			context.Log(err)
+			if err != nil {
+				context.Log(err)
+				continue
+			}
+			context.Log("business users:", len(bizUsers))
 
-			context.Log("business users:", bizUsers)
+			nodeListPendingUsers, err := biz.GetPendingUsers()
+			if err != nil {
+				context.Log(err)
+				continue
+			}
+
+			pendingUsers, err := businessrolerequest.ParseResponse(nodeListPendingUsers)
+			if err != nil {
+				context.Log(err)
+				continue
+			}
+
+			context.Log("pending users:", len(pendingUsers))
 
 		}
 
