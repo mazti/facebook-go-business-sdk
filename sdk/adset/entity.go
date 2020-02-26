@@ -16,54 +16,54 @@ type Entity struct {
 	request *sdk.APIRequest
 
 	AccountId                    string           `json:"account_id"`
-	Adlabels                     []interface{}    `json:"adlabels"`
-	EntitySchedule               []interface{}    `json:"Entity_schedule"`
+	Adlabels                     json.RawMessage  `json:"adlabels"`
+	EntitySchedule               json.RawMessage  `json:"Entity_schedule"`
 	AssetFeedId                  string           `json:"asset_feed_id"`
-	AttributionSpec              []interface{}    `json:"attribution_spec"`
-	BidAdjustments               interface{}      `json:"bid_adjustments"`
+	AttributionSpec              json.RawMessage  `json:"attribution_spec"`
+	BidAdjustments               json.RawMessage  `json:"bid_adjustments"`
 	BidAmount                    int64            `json:"bid_amount"`
-	BidConstraints               interface{}      `json:"bid_constraints"`
+	BidConstraints               json.RawMessage  `json:"bid_constraints"`
 	BidInfo                      map[string]int64 `json:"bid_info"`
-	BidStrategy                  interface{}      `json:"bid_strategy"`
-	BillingEvent                 interface{}      `json:"billing_event"`
+	BidStrategy                  json.RawMessage  `json:"bid_strategy"`
+	BillingEvent                 json.RawMessage  `json:"billing_event"`
 	BudgetRemaining              string           `json:"budget_remaining"`
-	Campaign                     interface{}      `json:"campaign"`
+	Campaign                     json.RawMessage  `json:"campaign"`
 	CampaignId                   string           `json:"campaign_id"`
-	ConfiguredStatus             interface{}      `json:"configured_status"`
+	ConfiguredStatus             json.RawMessage  `json:"configured_status"`
 	CreatedTime                  string           `json:"created_time"`
-	CreativeSequence             []interface{}    `json:"creative_sequence"`
+	CreativeSequence             json.RawMessage  `json:"creative_sequence"`
 	DailyBudget                  string           `json:"daily_budget"`
 	DailyMinSpendTarget          string           `json:"daily_min_spend_target"`
 	DailySpendCap                string           `json:"daily_spend_cap"`
 	DestinationType              string           `json:"destination_type"`
-	EffectiveStatus              interface{}      `json:"effective_status"`
+	EffectiveStatus              json.RawMessage  `json:"effective_status"`
 	EndTime                      string           `json:"end_time"`
-	FrequencyControlSpecs        []interface{}    `json:"frequency_control_specs"`
+	FrequencyControlSpecs        json.RawMessage  `json:"frequency_control_specs"`
 	FullFunnelExplorationMode    string           `json:"full_funnel_exploration_mode"`
 	ID                           string           `json:"id"`
 	InstagramActorId             string           `json:"instagram_actor_id"`
 	IsDynamicCreative            bool             `json:"is_dynamic_creative"`
-	IssuesInfo                   []interface{}    `json:"issues_info"`
+	IssuesInfo                   json.RawMessage  `json:"issues_info"`
 	LifetimeBudget               string           `json:"lifetime_budget"`
 	LifetimeImps                 int64            `json:"lifetime_imps"`
 	LifetimeMinSpendTarget       string           `json:"lifetime_min_spend_target"`
 	LifetimeSpendCap             string           `json:"lifetime_spend_cap"`
 	Name                         string           `json:"name"`
-	OptimizationGoal             interface{}      `json:"optimization_goal"`
+	OptimizationGoal             json.RawMessage  `json:"optimization_goal"`
 	OptimizationSubEvent         string           `json:"optimization_sub_event"`
-	PacingType                   []interface{}    `json:"pacing_type"`
-	PromotedObject               interface{}      `json:"promoted_object"`
-	Recommendations              []interface{}    `json:"recommendations"`
+	PacingType                   json.RawMessage  `json:"pacing_type"`
+	PromotedObject               json.RawMessage  `json:"promoted_object"`
+	Recommendations              json.RawMessage  `json:"recommendations"`
 	RecurringBudgetSemantics     bool             `json:"recurring_budget_semantics"`
 	ReviewFeedback               string           `json:"review_feedback"`
 	RfPredictionId               string           `json:"rf_prediction_id"`
-	SourceEntity                 interface{}      `json:"source_Entity"`
+	SourceEntity                 json.RawMessage  `json:"source_Entity"`
 	SourceEntityId               string           `json:"source_Entity_id"`
 	StartTime                    string           `json:"start_time"`
-	Status                       interface{}      `json:"status"`
-	Targeting                    interface{}      `json:"targeting"`
-	TimeBasedAdRotationIdBlocks  []interface{}    `json:"time_based_ad_rotation_id_blocks"`
-	TimeBasedAdRotationIntervals []interface{}    `json:"time_based_ad_rotation_intervals"`
+	Status                       json.RawMessage  `json:"status"`
+	Targeting                    json.RawMessage  `json:"targeting"`
+	TimeBasedAdRotationIdBlocks  json.RawMessage  `json:"time_based_ad_rotation_id_blocks"`
+	TimeBasedAdRotationIntervals json.RawMessage  `json:"time_based_ad_rotation_intervals"`
 	UpdatedTime                  string           `json:"updated_time"`
 	UseNewAppClick               bool             `json:"use_new_app_click"`
 	// TODO: check & correct field for interface

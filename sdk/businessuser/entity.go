@@ -1,6 +1,7 @@
 package businessuser
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk"
@@ -14,19 +15,19 @@ const (
 type Entity struct {
 	request *sdk.APIRequest
 
-	Business          interface{} `json:"business"`
-	Email             string      `json:"email"`
-	FinancePermission string      `json:"finance_permission"`
-	FirstName         string      `json:"first_name"`
-	ID                string      `json:"id"`
-	IpPermission      string      `json:"ip_permission"`
-	LastName          string      `json:"last_name"`
-	MarkedForRemoval  bool        `json:"marked_for_removal"`
-	Name              string      `json:"name"`
-	PendingEmail      string      `json:"pending_email"`
-	Role              string      `json:"role"`
-	Title             string      `json:"title"`
-	TwoFacStatus      string      `json:"two_fac_status"`
+	Business          json.RawMessage `json:"business"`
+	Email             string          `json:"email"`
+	FinancePermission string          `json:"finance_permission"`
+	FirstName         string          `json:"first_name"`
+	ID                string          `json:"id"`
+	IpPermission      string          `json:"ip_permission"`
+	LastName          string          `json:"last_name"`
+	MarkedForRemoval  bool            `json:"marked_for_removal"`
+	Name              string          `json:"name"`
+	PendingEmail      string          `json:"pending_email"`
+	Role              string          `json:"role"`
+	Title             string          `json:"title"`
+	TwoFacStatus      string          `json:"two_fac_status"`
 }
 
 func GetBusinessUsers(nodeID string, context *sdk.APIContext) (*sdk.APINodeList, error) {

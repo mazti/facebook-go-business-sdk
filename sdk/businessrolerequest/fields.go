@@ -1,20 +1,23 @@
 package businessrolerequest
 
 var (
+	params = []string{
+		"email",
+	}
+
 	fields = []string{
-		"business",
-		"canceled_time",
-		"cooldown_start_time",
 		"created_by",
 		"created_time",
-		"description",
-		"end_time",
+		"email",
+		"expiration_time",
+		"expiry_time",
+		"finance_role",
 		"id",
-		"name",
-		"observation_end_time",
-		"results_first_available_date",
-		"start_time",
-		"type",
+		"invite_link",
+		"ip_role",
+		"owner",
+		"role",
+		"status",
 		"updated_by",
 		"updated_time",
 	}
