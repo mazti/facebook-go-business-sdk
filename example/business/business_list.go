@@ -40,6 +40,14 @@ func main() {
 			}
 			context.Log("business users:", len(bizUsers))
 
+			createdUser, err := biz.CreateUser("xyxuxixuxyxu434xyxyuxuxuxyxuxuxux@gmail.com", businessuser.Employee)
+			if err != nil {
+				context.Log(err)
+				continue
+			}
+
+			context.Log("created business role request id:", createdUser.Id)
+
 			nodeListPendingUsers, err := biz.GetPendingUsers()
 			if err != nil {
 				context.Log(err)

@@ -2,6 +2,7 @@ package business
 
 import (
 	"encoding/json"
+	"github.com/mazti/facebook-go-business-sdk/sdk/businesscreateuser"
 	"net/http"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk"
@@ -38,6 +39,19 @@ type Entity struct {
 	Vertical                        string          `json:"vertical"`
 	VerticalID                      int64           `json:"vertical_id"`
 }
+
+func (ent *Entity) CreateUser(email string, role businessuser.Role) (*businesscreateuser.Entity, error) {
+	resp, err := businesscreateuser.CreateAPIRequestCreateBusinessUser(ent.ID, ent.GetRequest().Context).
+		SetEmail(email).
+		SetRole(role).
+		Execute()
+
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 
 func (ent *Entity) GetUsers() (*sdk.APINodeList, error) {
 	resp, err := businessuser.GetBusinessUsers(ent.ID, ent.GetRequest().Context)
