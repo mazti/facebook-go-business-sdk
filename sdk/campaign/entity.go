@@ -44,8 +44,8 @@ type Entity struct {
 	PacingType              []string                     `json:"pacing_type"`
 	PromotedObject          adpromotedobject.Entity      `json:"promoted_object"`
 	Recommendations         []adrecommendation.Entity    `json:"recommendations"`
-	SourceEntity            *Entity                      `json:"source_campaign"`
-	SourceEntityId          string                       `json:"source_campaign_id"`
+	SourceCampaign          *Entity                      `json:"source_campaign"`
+	SourceCampaignId        string                       `json:"source_campaign_id"`
 	SpecialAdCategory       string                       `json:"special_ad_category"`
 	SpendCap                string                       `json:"spend_cap"`
 	StartTime               string                       `json:"start_time"`
