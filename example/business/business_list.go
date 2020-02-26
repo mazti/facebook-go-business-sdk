@@ -53,7 +53,6 @@ func main() {
 			}
 
 			context.Log("pending users:", len(pendingUsers))
-
 		}
 
 		nodeList, err = nodeList.Next(0)
