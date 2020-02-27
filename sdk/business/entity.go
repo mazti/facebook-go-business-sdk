@@ -2,7 +2,6 @@ package business
 
 import (
 	"encoding/json"
-	"github.com/mazti/facebook-go-business-sdk/sdk/businesscreateuser"
 	"net/http"
 
 	"github.com/mazti/facebook-go-business-sdk/sdk"
@@ -12,8 +11,12 @@ import (
 )
 
 const (
-	nodeID   = "me"
 	endpoint = "businesses"
+)
+
+const (
+	emailKey = "email"
+	roleKey  = "role"
 )
 
 type Entity struct {
@@ -40,18 +43,20 @@ type Entity struct {
 	VerticalID                      int64           `json:"vertical_id"`
 }
 
-func (ent *Entity) CreateUser(email string, role businessuser.Role) (*businesscreateuser.Entity, error) {
-	resp, err := businesscreateuser.CreateAPIRequestCreateBusinessUser(ent.ID, ent.GetRequest().Context).
-		SetEmail(email).
-		SetRole(role).
-		Execute()
+func (ent *Entity) CreateUser(email string, role businessuser.Role) (*businessuser.Entity, error) {
+	params := map[string]interface{}{
+		emailKey: email,
+		roleKey:  string(role),
+	}
 
+	req := businessuser.NewAPIRequestCreateUser(ent.ID, ent.GetRequest().Context)
+	resp, err := req.ExecuteWithParams(params)
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
 
+	return resp.(*businessuser.Entity), nil
+}
 
 func (ent *Entity) GetUsers() (*sdk.APINodeList, error) {
 	resp, err := businessuser.GetBusinessUsers(ent.ID, ent.GetRequest().Context)
@@ -72,7 +77,7 @@ func (ent *Entity) GetPendingUsers() (*sdk.APINodeList, error) {
 func GetBusinesses(context *sdk.APIContext) (*sdk.APINodeList, error) {
 	req := sdk.NewAPIRequest(
 		context,
-		nodeID,
+		sdk.MeNodeID,
 		endpoint,
 		http.MethodGet,
 		sdk.Parser(sdk.ParserResponse),

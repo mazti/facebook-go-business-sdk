@@ -5,9 +5,11 @@ import (
 )
 
 const (
+	MeNodeID = "me"
+)
+
+const (
 	TimeRangeKey = "time_range"
-	EmailKey     = "email"
-	RoleKey      = "role"
 )
 
 type TimeRange struct {

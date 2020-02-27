@@ -46,7 +46,7 @@ func main() {
 				continue
 			}
 
-			context.Log("created business role request id:", createdUser.Id)
+			context.Log("created business role request id:", createdUser)
 
 			nodeListPendingUsers, err := biz.GetPendingUsers()
 			if err != nil {

@@ -47,6 +47,23 @@ func GetBusinessUsers(nodeID string, context *sdk.APIContext) (*sdk.APINodeList,
 	return resp.(*sdk.APINodeList), nil
 }
 
+func GetBusinessUsersOfMe(context *sdk.APIContext) (*sdk.APINodeList, error) {
+	req := sdk.NewAPIRequest(
+		context,
+		sdk.MeNodeID,
+		endpoint,
+		http.MethodGet,
+		sdk.Parser(sdk.ParserResponse),
+		sdk.ReturnFields(fields),
+	)
+
+	resp, err := req.Execute()
+	if err != nil {
+		return nil, err
+	}
+	return resp.(*sdk.APINodeList), nil
+}
+
 func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 	request := rawResp.GetRequest()
 	context := rawResp.GetRequest().Context
@@ -63,4 +80,23 @@ func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 		resp[i].SetRequest(request)
 	}
 	return
+}
+
+func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
+	ent := &Entity{}
+	if err := json.Unmarshal(data, ent); err != nil {
+		return ent, err
+	}
+	return ent, nil
+}
+
+func NewAPIRequestCreateUser(nodeID string, context *sdk.APIContext) *sdk.APIRequest {
+	return sdk.NewAPIRequest(
+		context,
+		nodeID,
+		endpoint,
+		http.MethodPost,
+		sdk.Parser(parserResponse),
+		sdk.ParamNames(params),
+	)
 }
