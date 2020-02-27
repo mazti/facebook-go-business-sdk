@@ -1,6 +1,10 @@
 package businessuser
 
 var (
+	params = []string{
+		"email",
+		"role",
+	}
 	fields = []string{
 		"business",
 		"email",

@@ -5,6 +5,10 @@ import (
 )
 
 const (
+	MeNodeID = "me"
+)
+
+const (
 	TimeRangeKey = "time_range"
 )
 

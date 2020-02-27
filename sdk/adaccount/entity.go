@@ -22,7 +22,6 @@ import (
 )
 
 const (
-	nodeID   = "me"
 	endpoint = "adaccounts"
 )
 
@@ -122,7 +121,7 @@ func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
 func GetAdAccounts(context *sdk.APIContext) (*sdk.APINodeList, error) {
 	req := sdk.NewAPIRequest(
 		context,
-		nodeID,
+		sdk.MeNodeID,
 		endpoint,
 		http.MethodGet,
 		sdk.Parser(sdk.ParserResponse),
