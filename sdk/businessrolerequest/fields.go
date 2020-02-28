@@ -1,10 +1,6 @@
 package businessrolerequest
 
 var (
-	params = []string{
-		"email",
-	}
-
 	fields = []string{
 		"created_by",
 		"created_time",
