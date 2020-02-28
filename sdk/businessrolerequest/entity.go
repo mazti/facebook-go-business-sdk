@@ -1,7 +1,6 @@
 package businessrolerequest
 
 import (
-	"encoding/json"
 	"github.com/mazti/facebook-go-business-sdk/sdk/reference"
 	"net/http"
 
@@ -15,7 +14,7 @@ const (
 type Entity struct {
 	request *sdk.APIRequest
 
-	CreatedBy      json.RawMessage  `json:"created_by"`
+	CreatedBy      reference.Entity `json:"created_by"`
 	CreatedTime    string           `json:"created_time"`
 	Email          string           `json:"email"`
 	ExpirationTime string           `json:"expiration_time"`
@@ -27,7 +26,7 @@ type Entity struct {
 	Owner          reference.Entity `json:"owner"`
 	Role           string           `json:"role"`
 	Status         string           `json:"status"`
-	UpdatedBy      string           `json:"updated_by"`
+	UpdatedBy      reference.Entity `json:"updated_by"`
 	UpdatedTime    string           `json:"updated_time"`
 }
 
