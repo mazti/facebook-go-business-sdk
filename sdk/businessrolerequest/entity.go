@@ -37,7 +37,7 @@ func GetPendingUsers(nodeID string, context *sdk.APIContext) (*sdk.APINodeList, 
 		endpoint,
 		http.MethodGet,
 		sdk.Parser(sdk.ParserResponse),
-		sdk.ParamNames(params),
+		sdk.ReturnFields(fields),
 	)
 	resp, err := req.Execute()
 	if err != nil {
