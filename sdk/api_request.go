@@ -122,7 +122,7 @@ func (req *APIRequest) parseResponse(body []byte, header []byte) (APIResponse, e
 	errResp := &FbErrorResponse{}
 	if err := json.Unmarshal(body, errResp); err == nil {
 		if len(errResp.Error.Message) > 0 {
-			return errResp, ErrorInResponse
+			return errResp, ErrorInResponse(errResp)
 		}
 	}
 	// If there is custom unmarshal then use it second

@@ -1,6 +1,7 @@
 package sdk
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 )
@@ -8,12 +9,17 @@ import (
 var (
 	UnsupportedResponse = errors.New("unsupported response")
 	ReachToTheEnd       = errors.New("reach to the end")
-	ErrorInResponse     = errors.New("there is an error in response")
 )
 
 var (
 	UnsupportedMethod = func(method string) error {
 		return fmt.Errorf("unsupported method: %s", method)
+	}
+	ErrorInResponse = func(errResp *FbErrorResponse) error {
+		if message, err := json.Marshal(errResp); err == nil {
+			return errors.New(string(message))
+		}
+		return errors.New("there is an error in response")
 	}
 )
 
