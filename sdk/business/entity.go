@@ -15,8 +15,8 @@ const (
 )
 
 const (
-	emailKey = "email"
-	roleKey  = "role"
+	EmailKey = "email"
+	RoleKey  = "role"
 )
 
 type Entity struct {
@@ -45,8 +45,8 @@ type Entity struct {
 
 func (ent *Entity) CreateUser(email string, role businessuser.Role) (*businessuser.Entity, error) {
 	params := map[string]interface{}{
-		emailKey: email,
-		roleKey:  string(role),
+		EmailKey: email,
+		RoleKey:  string(role),
 	}
 
 	req := businessuser.NewAPIRequestCreateUser(ent.ID, ent.GetRequest().Context)
