@@ -26,7 +26,13 @@ func main() {
 		businesses, err := business.ParseResponse(nodeList)
 		context.Log(err)
 
-		for _, biz := range businesses {
+		for _, b := range businesses {
+			biz, err := business.FetchByID(b.ID, context)
+			if err != nil {
+				context.Log(err)
+				continue
+			}
+
 			nodeListUsers, err := biz.GetUsers()
 			if err != nil {
 				context.Log(err)

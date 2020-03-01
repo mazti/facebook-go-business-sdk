@@ -1,13 +1,13 @@
 package business
 
 import (
-	"github.com/mazti/facebook-go-business-sdk/sdk/reference"
-	"net/http"
-
+	"encoding/json"
 	"github.com/mazti/facebook-go-business-sdk/sdk"
 	"github.com/mazti/facebook-go-business-sdk/sdk/businessrolerequest"
 	"github.com/mazti/facebook-go-business-sdk/sdk/businessuser"
 	"github.com/mazti/facebook-go-business-sdk/sdk/page"
+	"github.com/mazti/facebook-go-business-sdk/sdk/reference"
+	"net/http"
 )
 
 const (
@@ -15,8 +15,8 @@ const (
 )
 
 const (
-	EmailKey = "email"
-	RoleKey  = "role"
+	emailKey = "email"
+	roleKey  = "role"
 )
 
 type Entity struct {
@@ -43,10 +43,29 @@ type Entity struct {
 	VerticalID                      int64            `json:"vertical_id"`
 }
 
+func FetchByID(id string, context *sdk.APIContext) (*Entity, error) {
+	req := sdk.NewAPIRequest(
+		context,
+		id,
+		sdk.DefaultEndpoint,
+		http.MethodGet,
+		sdk.Parser(parserResponse),
+		sdk.ReturnFields(fields),
+	)
+	ent, err := req.Execute()
+	if err != nil {
+		return nil, err
+	}
+
+	business := ent.(*Entity)
+
+	return business, nil
+}
+
 func (ent *Entity) CreateUser(email string, role businessuser.Role) (*businessuser.Entity, error) {
 	params := map[string]interface{}{
-		EmailKey: email,
-		RoleKey:  string(role),
+		emailKey: email,
+		roleKey:  string(role),
 	}
 
 	req := businessuser.NewAPIRequestCreateUser(ent.ID, ent.GetRequest().Context)
@@ -107,4 +126,12 @@ func ParseResponse(rawResp sdk.APIResponse) (resp []Entity, err error) {
 		resp[i].SetRequest(request)
 	}
 	return
+}
+
+func parserResponse(data json.RawMessage) (sdk.APIResponse, error) {
+	ent := &Entity{}
+	if err := json.Unmarshal(data, ent); err != nil {
+		return ent, err
+	}
+	return ent, nil
 }
