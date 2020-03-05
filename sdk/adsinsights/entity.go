@@ -236,10 +236,10 @@ type Entity struct {
 	VideoP75WatchedActions                    []adsactionstats.Entity `json:"video_p75_watched_actions"`
 	VideoP95WatchedActions                    []adsactionstats.Entity `json:"video_p95_watched_actions"`
 	VideoPlayActions                          []adsactionstats.Entity `json:"video_play_actions"`
-	VideoPlayCurveActions                     []json.RawMessage       `json:"video_play_curve_actions"`
-	VideoPlayRetention0To15sActions           []json.RawMessage       `json:"video_play_retention_0_to_15s_actions"`
-	VideoPlayRetention20To60sActions          []json.RawMessage       `json:"video_play_retention_20_to_60s_actions"`
-	VideoPlayRetentionGraphActions            []json.RawMessage       `json:"video_play_retention_graph_actions"`
+	VideoPlayCurveActions                     json.RawMessage         `json:"video_play_curve_actions"`
+	VideoPlayRetention0To15sActions           json.RawMessage         `json:"video_play_retention_0_to_15s_actions"`
+	VideoPlayRetention20To60sActions          json.RawMessage         `json:"video_play_retention_20_to_60s_actions"`
+	VideoPlayRetentionGraphActions            json.RawMessage         `json:"video_play_retention_graph_actions"`
 	VideoThruplayWatchedActions               []adsactionstats.Entity `json:"video_thruplay_watched_actions"`
 	VideoTimeWatchedActions                   []adsactionstats.Entity `json:"video_time_watched_actions"`
 	WebsiteClicks                             string                  `json:"website_clicks"`
